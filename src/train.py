@@ -1,3 +1,4 @@
+import os
 import time
 
 import torch
@@ -9,9 +10,9 @@ from torchvision import transforms
 from tqdm import tqdm
 import numpy as np
 
-from utils.save_model import save_model
-from .dataset import LLIDataset
-from .model import AutoEncoder
+# from utils.save_model import save_model
+from dataset import LLIDataset
+from model import AutoEncoder
 
 
 def train(model, optimizer, criterion, n_epoch,
@@ -69,14 +70,14 @@ def train(model, optimizer, criterion, n_epoch,
 
     time_elapsed = time.time() - since
     print('Training completed in {:.0f}m {:.0f}s'.format(time_elapsed // 60, time_elapsed % 60))
-    save_model(model, 'new_model.pt')
+    # save_model(model, 'new_model.pt')
 
 
 if __name__ == '__main__':
-    INPUT_SIZE = 224
-    # DATASET_DIR_ROOT = "/home/novin/Desktop/aptos"
-    BATCH_SIZE = 32
-    EPOCHS = 80
+    INPUT_SIZE = 64
+    DATASET_DIR_ROOT = "/Users/sinaraoufi/Desktop/Paper/LLIE/LOLdataset"
+    BATCH_SIZE = 8
+    EPOCHS = 1
 
     device = "cpu"
     if torch.cuda.is_available():
@@ -89,26 +90,20 @@ if __name__ == '__main__':
         transforms.ToTensor(),
     ])
 
-    validation_transforms = transforms.Compose([
-        transforms.Resize((INPUT_SIZE, INPUT_SIZE)),
-        transforms.ToTensor(),
-    ])
-
     test_transforms = transforms.Compose([
         transforms.Resize((INPUT_SIZE, INPUT_SIZE)),
         transforms.ToTensor(),
     ])
 
-    train_dataset = LLIDataset()
-    validation_dataset = LLIDataset()
-    test_dataset = LLIDataset()
+    train_dataset = LLIDataset(os.path.join(DATASET_DIR_ROOT, "train", "low"), os.path.join(DATASET_DIR_ROOT, "train", "high"), train_transforms, train_transforms)
+    test_dataset = LLIDataset(os.path.join(DATASET_DIR_ROOT, "test", "low"), os.path.join(DATASET_DIR_ROOT, "test", "high"), test_transforms, test_transforms)
 
     data_loaders = {
         "train": DataLoader(
             train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=5
         ),
         "validation": DataLoader(
-            validation_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=5
+            test_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=5
         )
     }
 
