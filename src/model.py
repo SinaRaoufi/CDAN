@@ -19,9 +19,9 @@ class ResidualBlock(nn.Module):
         return out
 
 
-class Autoencoder(nn.Module):
+class AutoEncoder(nn.Module):
     def __init__(self):
-        super(Autoencoder, self).__init__()
+        super(AutoEncoder, self).__init__()
         self.encoder = nn.Sequential(
             nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1),
             nn.ReLU(inplace=True),

@@ -4,7 +4,7 @@ from torch.utils.data.dataset import Dataset
 from PIL import Image
 
 
-class PairedDataset(Dataset):
+class LLIDataset(Dataset):
     def __init__(self, low_light_root, normal_light_root, low_light_transforms, normal_light_transforms):
         super().__init__()
         self.low_light_dataset = [os.path.join(low_light_root, image) for image in os.listdir(low_light_root)]
