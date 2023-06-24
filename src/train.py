@@ -81,12 +81,14 @@ def train(model, optimizer, criterion, n_epoch,
 
     time_elapsed = time.time() - since
     print('Training completed in {:.0f}m {:.0f}s'.format(time_elapsed // 60, time_elapsed % 60))
-    # save_model(model, 'new_model.pt')
+    # save_model(model, SAVE_DIR_ROOT, MODEL_NAME', device)
 
 
 if __name__ == '__main__':
     INPUT_SIZE = 256
     DATASET_DIR_ROOT = "/Users/hossshakiba/Desktop/LLIE Paper/LOLdataset"
+    SAVE_DIR_ROOT = "/Users/hossshakiba/Desktop/LLIE Paper/"
+    MODEL_NAME = "SimpleCNN.pt"
     BATCH_SIZE = 32
     EPOCHS = 80
 
