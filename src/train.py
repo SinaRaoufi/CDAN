@@ -7,6 +7,7 @@ import torch.optim as optim
 from torch.utils.data import DataLoader
 from torchvision import transforms
 
+from PIL import Image
 from tqdm import tqdm
 import numpy as np
 
@@ -40,7 +41,6 @@ def train(model, optimizer, criterion, n_epoch,
 
             loss.backward()
             optimizer.step()
-            # scheduler.step()
 
         train_loss = train_loss / len(data_loaders['train'].dataset)
 
@@ -55,6 +55,17 @@ def train(model, optimizer, criterion, n_epoch,
                 outputs = model(inputs)
                 loss = criterion(outputs, targets)
                 val_loss += loss.item()
+                
+                # Save output images every 10 ephoch
+                if (epoch + 1) % 10 == 0:
+                    for i, output_image in enumerate(outputs):
+                        output_image = output_image.detach().cpu().permute(1, 2, 0).numpy()
+                        output_image = (output_image * 255).astype(np.uint8)
+                        output_image = Image.fromarray(output_image)
+                        os.makedirs('output_images', exist_ok=True)
+                        output_path = os.path.join('output_images', f'output_{epoch + 1}_{i + 1}.png')
+                        output_image.save(output_path)
+                
 
             val_loss = val_loss / len(data_loaders['validation'].dataset)
 
@@ -64,8 +75,8 @@ def train(model, optimizer, criterion, n_epoch,
         val_losses[epoch] = val_loss
 
         print(f"Epoch {epoch+1}/{n_epoch}:")
-        print(f"Train Loss: {train_loss:.2f}")
-        print(f"Validation Loss: {val_loss:.2f}")
+        print(f"Train Loss: {train_loss:.4f}")
+        print(f"Validation Loss: {val_loss:.4f}")
         print('-'*20)
 
     time_elapsed = time.time() - since
@@ -74,10 +85,10 @@ def train(model, optimizer, criterion, n_epoch,
 
 
 if __name__ == '__main__':
-    INPUT_SIZE = 64
-    DATASET_DIR_ROOT = "/Users/sinaraoufi/Desktop/Paper/LLIE/LOLdataset"
-    BATCH_SIZE = 8
-    EPOCHS = 1
+    INPUT_SIZE = 256
+    DATASET_DIR_ROOT = "/Users/hossshakiba/Desktop/LLIE Paper/LOLdataset"
+    BATCH_SIZE = 32
+    EPOCHS = 30
 
     device = "cpu"
     if torch.cuda.is_available():
