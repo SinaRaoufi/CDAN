@@ -81,7 +81,7 @@ def train(model, optimizer, criterion, n_epoch,
 
     time_elapsed = time.time() - since
     print('Training completed in {:.0f}m {:.0f}s'.format(time_elapsed // 60, time_elapsed % 60))
-    # save_model(model, SAVE_DIR_ROOT, MODEL_NAME')
+    # save_model(model, SAVE_DIR_ROOT, MODEL_NAME', device)
 
 
 if __name__ == '__main__':
