@@ -58,7 +58,7 @@ def train(model, optimizer, criterion, n_epoch,
                 val_loss += loss.item()
                 
                 # Save output images every 10 ephoch
-                if (epoch + 1) % 10 == 0:
+                if (epoch + 1) % 20 == 0:
                     for i, output_image in enumerate(outputs):
                         output_image = output_image.detach().cpu().permute(1, 2, 0).numpy()
                         output_image = (output_image * 255).astype(np.uint8)
@@ -100,7 +100,7 @@ if __name__ == '__main__':
     SAVE_DIR_ROOT = "/Users/hossshakiba/Desktop/LLIE Paper/"
     MODEL_NAME = "SimpleCNN.pt"
     BATCH_SIZE = 32
-    EPOCHS = 30
+    EPOCHS = 80
 
     device = "cpu"
     if torch.cuda.is_available():
@@ -118,15 +118,25 @@ if __name__ == '__main__':
         transforms.ToTensor(),
     ])
 
-    train_dataset = LLIDataset(os.path.join(DATASET_DIR_ROOT, "train", "low"), os.path.join(DATASET_DIR_ROOT, "train", "high"), train_transforms, train_transforms)
-    test_dataset = LLIDataset(os.path.join(DATASET_DIR_ROOT, "test", "low"), os.path.join(DATASET_DIR_ROOT, "test", "high"), test_transforms, test_transforms)
+    train_dataset = LLIDataset(
+        os.path.join(DATASET_DIR_ROOT, "train", "low"),
+        os.path.join(DATASET_DIR_ROOT, "train", "high"),
+        train_transforms,
+        train_transforms
+    )
+    test_dataset = LLIDataset(
+        os.path.join(DATASET_DIR_ROOT, "test", "low"),
+        os.path.join(DATASET_DIR_ROOT, "test", "high"),
+        test_transforms,
+        test_transforms
+    )
 
     data_loaders = {
         "train": DataLoader(
-            train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=5
+            train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=2
         ),
         "validation": DataLoader(
-            test_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=5
+            test_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=2
         )
     }
 
