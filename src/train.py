@@ -1,5 +1,6 @@
 import os
 import time
+import random
 
 import torch
 import torch.nn as nn
@@ -85,6 +86,15 @@ def train(model, optimizer, criterion, n_epoch,
 
 
 if __name__ == '__main__':
+    seed_value = 42
+    random.seed(seed_value)
+    np.random.seed(seed_value)
+    torch.manual_seed(seed_value)
+    torch.cuda.manual_seed(seed_value)
+    torch.cuda.manual_seed_all(seed_value)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
     INPUT_SIZE = 256
     DATASET_DIR_ROOT = "/Users/hossshakiba/Desktop/LLIE Paper/LOLdataset"
     SAVE_DIR_ROOT = "/Users/hossshakiba/Desktop/LLIE Paper/"
