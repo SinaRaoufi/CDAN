@@ -11,7 +11,7 @@ from torchvision import transforms
 from PIL import Image
 from tqdm import tqdm
 import numpy as np
-
+from decouple import config
 # from utils.save_model import save_model
 from dataset import LLIDataset
 from model import AutoEncoder
@@ -96,8 +96,8 @@ if __name__ == '__main__':
     torch.backends.cudnn.benchmark = False
 
     INPUT_SIZE = 256
-    DATASET_DIR_ROOT = "/Users/hossshakiba/Desktop/LLIE Paper/LOLdataset"
-    SAVE_DIR_ROOT = "/Users/hossshakiba/Desktop/LLIE Paper/"
+    DATASET_DIR_ROOT = config('DATASET_DIR_ROOT')
+    SAVE_DIR_ROOT = config('SAVE_DIR_ROOT')
     MODEL_NAME = "SimpleCNN.pt"
     BATCH_SIZE = 32
     EPOCHS = 80
