@@ -1,5 +1,7 @@
 import torch.nn as nn
 
+from cbam import CBAM
+
 
 class ResidualBlock(nn.Module):
     def __init__(self, channels):
@@ -38,6 +40,7 @@ class AutoEncoder(nn.Module):
             nn.ReLU(inplace=True),
             ResidualBlock(512)
         )
+        self.bottleneck = CBAM(512)
         self.decoder = nn.Sequential(
             nn.ConvTranspose2d(512, 256, kernel_size=3, stride=1, padding=1),
             nn.ReLU(inplace=True),
@@ -51,6 +54,7 @@ class AutoEncoder(nn.Module):
 
     def forward(self, x):
         x = self.encoder(x)
+        x = self.bottleneck(x)
         x = self.decoder(x)
         return x
 

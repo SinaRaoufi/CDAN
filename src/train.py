@@ -14,7 +14,7 @@ import numpy as np
 from decouple import config
 # from utils.save_model import save_model
 from dataset import LLIDataset
-from model import AutoEncoder
+from models.model import AutoEncoder
 
 from torchmetrics import PeakSignalNoiseRatio
 from torchmetrics import StructuralSimilarityIndexMeasure
