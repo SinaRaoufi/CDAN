@@ -85,12 +85,12 @@ def train(model, optimizer, criterion, n_epoch,
 
 
 if __name__ == '__main__':
-    INPUT_SIZE = 256
+    INPUT_SIZE = 128
     DATASET_DIR_ROOT = "/Users/hossshakiba/Desktop/LLIE Paper/LOLdataset"
     SAVE_DIR_ROOT = "/Users/hossshakiba/Desktop/LLIE Paper/"
     MODEL_NAME = "SimpleCNN.pt"
-    BATCH_SIZE = 32
-    EPOCHS = 80
+    BATCH_SIZE = 8
+    EPOCHS = 200
 
     device = "cpu"
     if torch.cuda.is_available():
@@ -123,10 +123,10 @@ if __name__ == '__main__':
 
     data_loaders = {
         "train": DataLoader(
-            train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=2
+            train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=1
         ),
         "validation": DataLoader(
-            test_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=2
+            test_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=1
         )
     }
 
