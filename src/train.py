@@ -1,5 +1,6 @@
 import os
 import time
+import random
 
 import torch
 import torch.nn as nn
@@ -10,10 +11,13 @@ from torchvision import transforms
 from PIL import Image
 from tqdm import tqdm
 import numpy as np
-
+from decouple import config
 # from utils.save_model import save_model
 from dataset import LLIDataset
-from model import AutoEncoder
+from models.model import AutoEncoder
+
+from torchmetrics import PeakSignalNoiseRatio
+from torchmetrics import StructuralSimilarityIndexMeasure
 
 
 def train(model, optimizer, criterion, n_epoch,
@@ -23,11 +27,16 @@ def train(model, optimizer, criterion, n_epoch,
     val_losses = np.zeros(n_epoch)
 
     model.to(device)
+    psnr = PeakSignalNoiseRatio().to(device)
+    ssim = StructuralSimilarityIndexMeasure().to(device)
+
 
     since = time.time()
 
     for epoch in range(n_epoch):
         train_loss = 0.0
+        train_psnr = 0.0
+        train_ssim = 0.0
         model.train()
         for inputs, targets in tqdm(data_loaders['train'], desc=f'Training... Epoch: {epoch + 1}/{EPOCHS}'):
 
@@ -38,14 +47,20 @@ def train(model, optimizer, criterion, n_epoch,
             outputs = model(inputs)
             loss = criterion(outputs, targets)
             train_loss += loss.item()
+            train_psnr += psnr(outputs, targets)
+            train_ssim += ssim(outputs, targets)
 
             loss.backward()
             optimizer.step()
 
         train_loss = train_loss / len(data_loaders['train'].dataset)
+        train_psnr = train_psnr / len(data_loaders['train'].dataset)
+        train_ssim = train_ssim / len(data_loaders['train'].dataset)
 
         with torch.no_grad():
             val_loss = 0.0
+            val_psnr = 0.0
+            val_ssim = 0.0
             model.eval()
             for inputs, targets in tqdm(data_loaders['validation'], desc=f'Validating... Epoch: {epoch + 1}/{EPOCHS}'):
                 inputs, targets = inputs.to(device), targets.to(device)
@@ -55,8 +70,10 @@ def train(model, optimizer, criterion, n_epoch,
                 outputs = model(inputs)
                 loss = criterion(outputs, targets)
                 val_loss += loss.item()
+                val_psnr += psnr(outputs, targets)
+                val_ssim += ssim(outputs, targets)
                 
-                # Save output images every 10 ephoch
+                # Save output images every 20 epoch
                 if (epoch + 1) % 20 == 0:
                     for i, output_image in enumerate(outputs):
                         output_image = output_image.detach().cpu().permute(1, 2, 0).numpy()
@@ -68,15 +85,17 @@ def train(model, optimizer, criterion, n_epoch,
                 
 
             val_loss = val_loss / len(data_loaders['validation'].dataset)
+            val_psnr = val_psnr / len(data_loaders['validation'].dataset)
+            val_ssim = val_ssim / len(data_loaders['validation'].dataset)
 
 
         # save epoch losses
         train_losses[epoch] = train_loss
         val_losses[epoch] = val_loss
 
-        print(f"Epoch {epoch+1}/{n_epoch}:")
-        print(f"Train Loss: {train_loss:.4f}")
-        print(f"Validation Loss: {val_loss:.4f}")
+        print(f"Epoch [{epoch+1}/{n_epoch}]:")
+        print(f"Train Loss: {train_loss:.4f}, Train PSNR: {train_psnr:.4f}, Train SSIM: {train_ssim:.4f}")
+        print(f"Validation Loss: {val_loss:.4f}, Validation PSNR: {val_psnr:.4f}, Validation SSIM: {val_ssim:.4f}")
         print('-'*20)
 
     time_elapsed = time.time() - since
@@ -85,9 +104,18 @@ def train(model, optimizer, criterion, n_epoch,
 
 
 if __name__ == '__main__':
-    INPUT_SIZE = 128
-    DATASET_DIR_ROOT = "/Users/hossshakiba/Desktop/LLIE Paper/LOLdataset"
-    SAVE_DIR_ROOT = "/Users/hossshakiba/Desktop/LLIE Paper/"
+    seed_value = 42
+    random.seed(seed_value)
+    np.random.seed(seed_value)
+    torch.manual_seed(seed_value)
+    torch.cuda.manual_seed(seed_value)
+    torch.cuda.manual_seed_all(seed_value)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
+    INPUT_SIZE = 256
+    DATASET_DIR_ROOT = config('DATASET_DIR_ROOT')
+    SAVE_DIR_ROOT = config('SAVE_DIR_ROOT')
     MODEL_NAME = "SimpleCNN.pt"
     BATCH_SIZE = 8
     EPOCHS = 200
