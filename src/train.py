@@ -17,6 +17,7 @@ from dataset import LLIDataset
 from model import AutoEncoder
 
 from torchmetrics import PeakSignalNoiseRatio
+from torchmetrics import StructuralSimilarityIndexMeasure
 
 
 def train(model, optimizer, criterion, n_epoch,
@@ -27,6 +28,7 @@ def train(model, optimizer, criterion, n_epoch,
 
     model.to(device)
     psnr = PeakSignalNoiseRatio().to(device)
+    ssim = StructuralSimilarityIndexMeasure().to(device)
 
 
     since = time.time()
@@ -34,6 +36,7 @@ def train(model, optimizer, criterion, n_epoch,
     for epoch in range(n_epoch):
         train_loss = 0.0
         train_psnr = 0.0
+        train_ssim = 0.0
         model.train()
         for inputs, targets in tqdm(data_loaders['train'], desc=f'Training... Epoch: {epoch + 1}/{EPOCHS}'):
 
@@ -45,16 +48,19 @@ def train(model, optimizer, criterion, n_epoch,
             loss = criterion(outputs, targets)
             train_loss += loss.item()
             train_psnr += psnr(outputs, targets)
+            train_ssim += ssim(outputs, targets)
 
             loss.backward()
             optimizer.step()
 
         train_loss = train_loss / len(data_loaders['train'].dataset)
         train_psnr = train_psnr / len(data_loaders['train'].dataset)
+        train_ssim = train_ssim / len(data_loaders['train'].dataset)
 
         with torch.no_grad():
             val_loss = 0.0
             val_psnr = 0.0
+            val_ssim = 0.0
             model.eval()
             for inputs, targets in tqdm(data_loaders['validation'], desc=f'Validating... Epoch: {epoch + 1}/{EPOCHS}'):
                 inputs, targets = inputs.to(device), targets.to(device)
@@ -65,6 +71,7 @@ def train(model, optimizer, criterion, n_epoch,
                 loss = criterion(outputs, targets)
                 val_loss += loss.item()
                 val_psnr += psnr(outputs, targets)
+                val_ssim += ssim(outputs, targets)
                 
                 # Save output images every 20 epoch
                 if (epoch + 1) % 20 == 0:
@@ -79,6 +86,7 @@ def train(model, optimizer, criterion, n_epoch,
 
             val_loss = val_loss / len(data_loaders['validation'].dataset)
             val_psnr = val_psnr / len(data_loaders['validation'].dataset)
+            val_ssim = val_ssim / len(data_loaders['validation'].dataset)
 
 
         # save epoch losses
@@ -86,8 +94,8 @@ def train(model, optimizer, criterion, n_epoch,
         val_losses[epoch] = val_loss
 
         print(f"Epoch [{epoch+1}/{n_epoch}]:")
-        print(f"Train Loss: {train_loss:.4f}, Train PSNR: {train_psnr:.4f}")
-        print(f"Validation Loss: {val_loss:.4f}, Validation PSNR: {val_psnr:.4f}")
+        print(f"Train Loss: {train_loss:.4f}, Train PSNR: {train_psnr:.4f}, Train SSIM: {train_ssim:.4f}")
+        print(f"Validation Loss: {val_loss:.4f}, Validation PSNR: {val_psnr:.4f}, Validation SSIM: {val_ssim:.4f}")
         print('-'*20)
 
     time_elapsed = time.time() - since
