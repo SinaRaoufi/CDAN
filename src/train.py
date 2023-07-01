@@ -15,6 +15,7 @@ from decouple import config
 # from utils.save_model import save_model
 from dataset import LLIDataset
 from models.model import AutoEncoder
+from models.enhanced_model import EnhancedAutoEncoder
 
 from torchmetrics import PeakSignalNoiseRatio
 from torchmetrics import StructuralSimilarityIndexMeasure
@@ -150,14 +151,15 @@ if __name__ == '__main__':
 
     data_loaders = {
         "train": DataLoader(
-            train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=2
+            train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4
         ),
         "validation": DataLoader(
-            test_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=2
+            test_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4
         )
     }
 
-    model = AutoEncoder().to(device)
+    # model = AutoEncoder().to(device)
+    model = EnhancedAutoEncoder().to(device)
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
