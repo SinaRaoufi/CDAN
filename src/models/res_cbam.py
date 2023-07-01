@@ -249,16 +249,12 @@ class LLIE(nn.Module):
         self.bottleneck = CBAM(512)
 
         self.decoder_conv1 = nn.ConvTranspose2d(512, 256, kernel_size=3, stride=1, padding=1)
-        self.decoder_bn1 = nn.BatchNorm2d(256)
         self.decoder_relu1 = nn.ReLU(inplace=True)
         self.decoder_conv2 = nn.ConvTranspose2d(256, 128, kernel_size=3, stride=2, padding=1, output_padding=1)
-        self.decoder_bn2 = nn.BatchNorm2d(128)
         self.decoder_relu2 = nn.ReLU(inplace=True)
         self.decoder_conv3 = nn.ConvTranspose2d(128, 64, kernel_size=3, stride=2, padding=1, output_padding=1)
-        self.decoder_bn3 = nn.BatchNorm2d(64)
         self.decoder_relu3 = nn.ReLU(inplace=True)
         self.decoder_conv4 = nn.ConvTranspose2d(64, 3, kernel_size=3, stride=2, padding=1, output_padding=1)
-        self.decoder_bn4 = nn.BatchNorm2d(3)
         self.decoder_sigmoid = nn.Sigmoid()
 
     def forward(self, x):
@@ -295,19 +291,22 @@ class LLIE(nn.Module):
 
         # Decoder
         out = self.decoder_conv1(out)
-        out = self.decoder_bn1(out)
+        # out = self.encoder_bn4(out)
         out = self.decoder_relu1(out)
         out = torch.add(out, skip_connections[2])
+        # print(f'decoder: {out.shape}')
         out = self.decoder_conv2(out)
-        out = self.decoder_bn2(out)
+        # out = self.encoder_bn3(out)
         out = self.decoder_relu2(out)
         out = torch.add(out, skip_connections[1])
+        # print(f'decoder: {out.shape}')
         out = self.decoder_conv3(out)
-        out = self.decoder_bn3(out)
+        # out = self.encoder_bn2(out)
         out = self.decoder_relu3(out)
         out = torch.add(out, skip_connections[0])
+        # print(f'decoder: {out.shape}')
         out = self.decoder_conv4(out)
-        out = self.decoder_bn4(out)
+        # out = self.encoder_bn1(out)
         out = self.decoder_sigmoid(out)
 
         return out
