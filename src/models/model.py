@@ -1,6 +1,6 @@
 import torch.nn as nn
 
-from cbam import CBAM
+from models.cbam import CBAM
 
 
 class ResidualBlock(nn.Module):

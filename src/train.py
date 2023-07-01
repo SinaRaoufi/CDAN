@@ -12,9 +12,12 @@ from PIL import Image
 from tqdm import tqdm
 import numpy as np
 from decouple import config
+
 # from utils.save_model import save_model
 from dataset import LLIDataset
 from models.model import AutoEncoder
+from models.res_cbam import LLIE, build_unet
+from models.res_bam import ResBAM
 
 from torchmetrics import PeakSignalNoiseRatio
 from torchmetrics import StructuralSimilarityIndexMeasure
@@ -113,11 +116,11 @@ if __name__ == '__main__':
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
-    INPUT_SIZE = 256
+    INPUT_SIZE = 128
     DATASET_DIR_ROOT = config('DATASET_DIR_ROOT')
     SAVE_DIR_ROOT = config('SAVE_DIR_ROOT')
     MODEL_NAME = "SimpleCNN.pt"
-    BATCH_SIZE = 8
+    BATCH_SIZE = 32
     EPOCHS = 200
 
     device = "cpu"
@@ -158,7 +161,7 @@ if __name__ == '__main__':
         )
     }
 
-    model = AutoEncoder().to(device)
+    model = LLIE().to(device)
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
