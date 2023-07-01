@@ -16,8 +16,12 @@ from decouple import config
 # from utils.save_model import save_model
 from dataset import LLIDataset
 from models.model import AutoEncoder
+<<<<<<< HEAD
 from models.res_cbam import LLIE, build_unet
 from models.res_bam import ResBAM
+=======
+from models.enhanced_model import EnhancedAutoEncoder
+>>>>>>> 77ed22f53ef8558425efa7b357656fdffe715ba5
 
 from torchmetrics import PeakSignalNoiseRatio
 from torchmetrics import StructuralSimilarityIndexMeasure
@@ -42,7 +46,6 @@ def train(model, optimizer, criterion, n_epoch,
         train_ssim = 0.0
         model.train()
         for inputs, targets in tqdm(data_loaders['train'], desc=f'Training... Epoch: {epoch + 1}/{EPOCHS}'):
-
             inputs, targets = inputs.to(device), targets.to(device)
 
             optimizer.zero_grad()
@@ -56,9 +59,9 @@ def train(model, optimizer, criterion, n_epoch,
             loss.backward()
             optimizer.step()
 
-        train_loss = train_loss / len(data_loaders['train'].dataset)
-        train_psnr = train_psnr / len(data_loaders['train'].dataset)
-        train_ssim = train_ssim / len(data_loaders['train'].dataset)
+        train_loss = train_loss / len(data_loaders['train'])
+        train_psnr = train_psnr / len(data_loaders['train'])
+        train_ssim = train_ssim / len(data_loaders['train'])
 
         with torch.no_grad():
             val_loss = 0.0
@@ -87,9 +90,9 @@ def train(model, optimizer, criterion, n_epoch,
                         output_image.save(output_path)
                 
 
-            val_loss = val_loss / len(data_loaders['validation'].dataset)
-            val_psnr = val_psnr / len(data_loaders['validation'].dataset)
-            val_ssim = val_ssim / len(data_loaders['validation'].dataset)
+            val_loss = val_loss / len(data_loaders['validation'])
+            val_psnr = val_psnr / len(data_loaders['validation'])
+            val_ssim = val_ssim / len(data_loaders['validation'])
 
 
         # save epoch losses
