@@ -16,12 +16,9 @@ from decouple import config
 # from utils.save_model import save_model
 from dataset import LLIDataset
 from models.model import AutoEncoder
-<<<<<<< HEAD
 from models.res_cbam import LLIE, build_unet
 from models.res_bam import ResBAM
-=======
 from models.enhanced_model import EnhancedAutoEncoder
->>>>>>> 77ed22f53ef8558425efa7b357656fdffe715ba5
 
 from torchmetrics import PeakSignalNoiseRatio
 from torchmetrics import StructuralSimilarityIndexMeasure
