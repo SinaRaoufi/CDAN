@@ -29,18 +29,18 @@ class ResidualBlock(nn.Module):
     def forward(self, x):
         residual = x
         out = self.conv(x)
-        out = self.bn(x)
+        out = self.bn(out)
         out = self.relu(out)
         out = self.conv(out)
-        out = self.bn(x)
+        out = self.bn(out)
         out += residual
         out = self.relu(out)
         return out
 
 
-class LLIE(nn.Module):
+class Mix(nn.Module):
     def __init__(self):
-        super(LLIE, self).__init__()
+        super(Mix, self).__init__()
         self.encoder_conv1 = ConvBlock(3, 64)
         self.encoder_residual1 = ResidualBlock(64)
         self.encoder_maxpool1 = nn.MaxPool2d(kernel_size=2, stride=2)
@@ -57,11 +57,11 @@ class LLIE(nn.Module):
 
         self.decoder_conv1 = nn.ConvTranspose2d(512, 256, kernel_size=3, stride=1, padding=1)
         self.decoder_bn1 = nn.BatchNorm2d(256)
-        self.decoder_conv2 = nn.ConvTranspose2d(256, 128, kernel_size=3, stride=2, padding=1, output_padding=1)
+        self.decoder_conv2 = nn.ConvTranspose2d(256, 128, kernel_size=3, stride=1, padding=1)
         self.decoder_bn2 = nn.BatchNorm2d(128)
-        self.decoder_conv3 = nn.ConvTranspose2d(128, 64, kernel_size=3, stride=2, padding=1, output_padding=1)
+        self.decoder_conv3 = nn.ConvTranspose2d(128, 64, kernel_size=3, stride=1, padding=1)
         self.decoder_bn3 = nn.BatchNorm2d(64)
-        self.decoder_conv4 = nn.ConvTranspose2d(64, 3, kernel_size=3, stride=2, padding=1, output_padding=1)
+        self.decoder_conv4 = nn.ConvTranspose2d(64, 3, kernel_size=3, stride=1, padding=1)
         self.decoder_bn4 = nn.BatchNorm2d(3)
         self.decoder_relu = nn.ReLU(inplace=True)
         self.decoder_sigmoid = nn.Sigmoid()
@@ -95,13 +95,15 @@ class LLIE(nn.Module):
         out = self.decoder_conv2(out)
         out = self.decoder_bn2(out)
         out = self.decoder_relu(out)
+        out = F.interpolate(out, scale_factor=2, mode='nearest')
         out = torch.add(out, skip_connections[1])
         out = self.decoder_conv3(out)
         out = self.decoder_bn3(out)
         out = self.decoder_relu(out)
+        out = F.interpolate(out, scale_factor=2, mode='nearest')
         out = torch.add(out, skip_connections[0])
         out = self.decoder_conv4(out)
         out = self.decoder_bn4(out)
+        out = F.interpolate(out, scale_factor=2, mode='nearest')
         out = self.decoder_sigmoid(out)
-
         return out

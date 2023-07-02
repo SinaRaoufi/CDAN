@@ -21,6 +21,8 @@ from models.model import AutoEncoder
 from models.res_cbam import LLIE
 from models.res_bam import ResBAM
 from models.enhanced_model import EnhancedAutoEncoder
+from models.pixel_shuffle import Pixel
+from models.mix import Mix
 
 
 def train(model, optimizer, criterion, n_epoch,
@@ -76,7 +78,7 @@ def train(model, optimizer, criterion, n_epoch,
                 val_ssim += ssim(outputs, targets)
                 
                 # Save output images every 20 epoch
-                if (epoch + 1) % 20 == 0:
+                if (epoch + 1) % 10 == 0:
                     for i, output_image in enumerate(outputs):
                         output_image = output_image.detach().cpu().permute(1, 2, 0).numpy()
                         output_image = (output_image * 255).astype(np.uint8)
@@ -153,14 +155,14 @@ if __name__ == '__main__':
 
     data_loaders = {
         "train": DataLoader(
-            train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=1
+            train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4
         ),
         "validation": DataLoader(
-            test_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=1
+            test_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4
         )
     }
 
-    model = LLIE().to(device)
+    model = Mix().to(device)
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 

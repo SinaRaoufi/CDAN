@@ -1,9 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
 from models.cbam import CBAM
-
 
 class ConvBlock(nn.Module):
     def __init__(self, in_channels, out_channels):
@@ -17,7 +15,6 @@ class ConvBlock(nn.Module):
         out = self.bn(out)
         out = self.relu(out)
         return out
-    
 
 class ResidualBlock(nn.Module):
     def __init__(self, channels):
@@ -29,14 +26,13 @@ class ResidualBlock(nn.Module):
     def forward(self, x):
         residual = x
         out = self.conv(x)
-        out = self.bn(x)
+        out = self.bn(out)
         out = self.relu(out)
         out = self.conv(out)
-        out = self.bn(x)
+        out = self.bn(out)
         out += residual
         out = self.relu(out)
         return out
-
 
 class LLIE(nn.Module):
     def __init__(self):
@@ -55,13 +51,14 @@ class LLIE(nn.Module):
 
         self.bottleneck = CBAM(512)
 
-        self.decoder_conv1 = nn.ConvTranspose2d(512, 256, kernel_size=3, stride=1, padding=1)
-        self.decoder_bn1 = nn.BatchNorm2d(256)
-        self.decoder_conv2 = nn.ConvTranspose2d(256, 128, kernel_size=3, stride=2, padding=1, output_padding=1)
-        self.decoder_bn2 = nn.BatchNorm2d(128)
-        self.decoder_conv3 = nn.ConvTranspose2d(128, 64, kernel_size=3, stride=2, padding=1, output_padding=1)
-        self.decoder_bn3 = nn.BatchNorm2d(64)
-        self.decoder_conv4 = nn.ConvTranspose2d(64, 3, kernel_size=3, stride=2, padding=1, output_padding=1)
+        self.decoder_upsample1 = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
+        self.decoder_conv1 = ConvBlock(512, 256)
+        self.decoder_upsample2 = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
+        self.decoder_conv2 = ConvBlock(256, 128)
+        self.decoder_upsample3 = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
+        self.decoder_conv3 = ConvBlock(128, 64)
+        self.decoder_upsample4 = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
+        self.decoder_conv4 = nn.Conv2d(64, 3, kernel_size=3, stride=1, padding=1)
         self.decoder_bn4 = nn.BatchNorm2d(3)
         self.decoder_relu = nn.ReLU(inplace=True)
         self.decoder_sigmoid = nn.Sigmoid()
@@ -88,20 +85,14 @@ class LLIE(nn.Module):
         out = self.bottleneck(out)
 
         # Decoder
+        out = self.decoder_upsample1(out)
         out = self.decoder_conv1(out)
-        out = self.decoder_bn1(out)
-        out = self.decoder_relu(out)
-        out = torch.add(out, skip_connections[2])
+        out = self.decoder_upsample2(out)
         out = self.decoder_conv2(out)
-        out = self.decoder_bn2(out)
-        out = self.decoder_relu(out)
-        out = torch.add(out, skip_connections[1])
+        out = self.decoder_upsample3(out)
         out = self.decoder_conv3(out)
-        out = self.decoder_bn3(out)
-        out = self.decoder_relu(out)
-        out = torch.add(out, skip_connections[0])
+        # out = self.decoder_upsample4(out)
         out = self.decoder_conv4(out)
-        out = self.decoder_bn4(out)
         out = self.decoder_sigmoid(out)
-
+        # print(out.shape)
         return out
