@@ -9,10 +9,13 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 from torchmetrics import PeakSignalNoiseRatio
 from torchmetrics import StructuralSimilarityIndexMeasure
+import torch.nn.functional as F
+import torchvision.models as models
 
 from PIL import Image
 from tqdm import tqdm
 import numpy as np
+import cv2
 from decouple import config
 
 # from utils.save_model import save_model
@@ -23,11 +26,14 @@ from models.res_bam import ResBAM
 from models.enhanced_model import EnhancedAutoEncoder
 from models.pixel_shuffle import Pixel
 from models.mix import Mix
+from models.vae import MixVAE
 
 
 def train(model, optimizer, criterion, n_epoch,
           data_loaders: dict, device, lr_scheduler=None
           ):
+    vgg = models.vgg19(weights=models.VGG19_Weights.IMAGENET1K_V1).features[:16].to(device)
+    perceptual_loss_weight = 0.5  # Adjust the weight as desired
     train_losses = np.zeros(n_epoch)
     val_losses = np.zeros(n_epoch)
 
@@ -50,6 +56,8 @@ def train(model, optimizer, criterion, n_epoch,
 
             outputs = model(inputs)
             loss = criterion(outputs, targets)
+            perceptual_loss = perceptual_loss_weight * F.mse_loss(vgg(outputs), vgg(targets))
+            loss = loss + perceptual_loss
             train_loss += loss.item()
             train_psnr += psnr(outputs, targets)
             train_ssim += ssim(outputs, targets)
@@ -73,6 +81,8 @@ def train(model, optimizer, criterion, n_epoch,
 
                 outputs = model(inputs)
                 loss = criterion(outputs, targets)
+                perceptual_loss = perceptual_loss_weight * F.mse_loss(vgg(outputs), vgg(targets))
+                loss = loss + perceptual_loss
                 val_loss += loss.item()
                 val_psnr += psnr(outputs, targets)
                 val_ssim += ssim(outputs, targets)
@@ -117,7 +127,7 @@ if __name__ == '__main__':
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
-    INPUT_SIZE = 256
+    INPUT_SIZE = 128
     DATASET_DIR_ROOT = config('DATASET_DIR_ROOT')
     SAVE_DIR_ROOT = config('SAVE_DIR_ROOT')
     MODEL_NAME = "SimpleCNN.pt"
@@ -155,15 +165,15 @@ if __name__ == '__main__':
 
     data_loaders = {
         "train": DataLoader(
-            train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4
+            train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=1
         ),
         "validation": DataLoader(
-            test_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4
+            test_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=1
         )
     }
 
     model = Mix().to(device)
     criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
     train(model, optimizer, criterion, EPOCHS, data_loaders, device)

@@ -55,11 +55,11 @@ class Pixel(nn.Module):
 
         self.bottleneck = CBAM(512)
 
-        self.decoder_conv1 = ConvBlock(512, 256)
-        self.decoder_pixel_shuffle1 = nn.PixelShuffle(2)
-        self.decoder_conv2 = ConvBlock(256, 128)
+        self.decoder_conv1 = nn.ConvTranspose2d(512, 256, kernel_size=3, stride=1, padding=1)
+        self.decoder_pixel_shuffle1 = nn.PixelShuffle(4)
+        self.decoder_conv2 = nn.ConvTranspose2d(256, 128, kernel_size=3, stride=1, padding=1)
         self.decoder_pixel_shuffle2 = nn.PixelShuffle(2)
-        self.decoder_conv3 = ConvBlock(128, 64)
+        self.decoder_conv3 = nn.ConvTranspose2d(128, 64, kernel_size=3, stride=1, padding=1)
         self.decoder_pixel_shuffle3 = nn.PixelShuffle(2)
         self.decoder_conv4 = ConvBlock(64, 3)
         self.decoder_sigmoid = nn.Sigmoid()
@@ -88,6 +88,7 @@ class Pixel(nn.Module):
         # Decoder
         print(out.shape)
         out = self.decoder_conv1(out)
+        print('hello')
         out = self.decoder_pixel_shuffle1(out)
         print(out.shape)
         out = self.decoder_conv2(out)
