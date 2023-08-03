@@ -1,6 +1,7 @@
 import os
 import time
 import random
+import sys
 
 import torch
 import torch.nn as nn
@@ -18,7 +19,7 @@ import numpy as np
 import cv2
 from decouple import config
 
-# from utils.save_model import save_model
+from utils.save_model import save_model
 from dataset import LLIDataset
 from models.model import AutoEncoder
 from models.res_cbam import LLIE
@@ -36,6 +37,7 @@ def train(model, optimizer, criterion, n_epoch,
     perceptual_loss_weight = 0.5  # Adjust the weight as desired
     train_losses = np.zeros(n_epoch)
     val_losses = np.zeros(n_epoch)
+    best_psnr = 0.0
 
     model.to(device)
     psnr = PeakSignalNoiseRatio().to(device)
@@ -102,6 +104,8 @@ def train(model, optimizer, criterion, n_epoch,
             val_psnr = val_psnr / len(data_loaders['validation'])
             val_ssim = val_ssim / len(data_loaders['validation'])
 
+            if val_psnr > best_psnr:
+                save_model(model, SAVE_DIR_ROOT, MODEL_NAME, device)
 
         # save epoch losses
         train_losses[epoch] = train_loss
@@ -114,7 +118,6 @@ def train(model, optimizer, criterion, n_epoch,
 
     time_elapsed = time.time() - since
     print('Training completed in {:.0f}m {:.0f}s'.format(time_elapsed // 60, time_elapsed % 60))
-    # save_model(model, SAVE_DIR_ROOT, MODEL_NAME', device)
 
 
 if __name__ == '__main__':
