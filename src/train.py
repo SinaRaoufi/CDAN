@@ -33,7 +33,8 @@ from models.vae import MixVAE
 def train(model, optimizer, criterion, n_epoch,
           data_loaders: dict, device, lr_scheduler=None
           ):
-    vgg = models.vgg19(weights=models.VGG19_Weights.IMAGENET1K_V1).features[:16].to(device)
+    vgg = models.vgg19(
+        weights=models.VGG19_Weights.IMAGENET1K_V1).features[:16].to(device)
     perceptual_loss_weight = 0.5  # Adjust the weight as desired
     train_losses = np.zeros(n_epoch)
     val_losses = np.zeros(n_epoch)
@@ -42,7 +43,6 @@ def train(model, optimizer, criterion, n_epoch,
     model.to(device)
     psnr = PeakSignalNoiseRatio().to(device)
     ssim = StructuralSimilarityIndexMeasure().to(device)
-
 
     since = time.time()
 
@@ -58,7 +58,8 @@ def train(model, optimizer, criterion, n_epoch,
 
             outputs = model(inputs)
             loss = criterion(outputs, targets)
-            perceptual_loss = perceptual_loss_weight * F.mse_loss(vgg(outputs), vgg(targets))
+            perceptual_loss = perceptual_loss_weight * \
+                F.mse_loss(vgg(outputs), vgg(targets))
             loss = loss + perceptual_loss
             train_loss += loss.item()
             train_psnr += psnr(outputs, targets)
@@ -83,12 +84,13 @@ def train(model, optimizer, criterion, n_epoch,
 
                 outputs = model(inputs)
                 loss = criterion(outputs, targets)
-                perceptual_loss = perceptual_loss_weight * F.mse_loss(vgg(outputs), vgg(targets))
+                perceptual_loss = perceptual_loss_weight * \
+                    F.mse_loss(vgg(outputs), vgg(targets))
                 loss = loss + perceptual_loss
                 val_loss += loss.item()
                 val_psnr += psnr(outputs, targets)
                 val_ssim += ssim(outputs, targets)
-                
+
                 # Save output images every 20 epoch
                 if (epoch + 1) % 10 == 0:
                     for i, output_image in enumerate(outputs):
@@ -96,28 +98,32 @@ def train(model, optimizer, criterion, n_epoch,
                         output_image = (output_image * 255).astype(np.uint8)
                         output_image = Image.fromarray(output_image)
                         os.makedirs('output_images', exist_ok=True)
-                        output_path = os.path.join('output_images', f'output_{epoch + 1}_{i + 1}.png')
+                        output_path = os.path.join(
+                            'output_images', f'output_{epoch + 1}_{i + 1}.png')
                         output_image.save(output_path)
-                
 
             val_loss = val_loss / len(data_loaders['validation'])
             val_psnr = val_psnr / len(data_loaders['validation'])
             val_ssim = val_ssim / len(data_loaders['validation'])
 
             if val_psnr > best_psnr:
-                save_model(model, SAVE_DIR_ROOT, MODEL_NAME, device)
+                save_model(model, optimizer, val_loss, val_psnr,
+                           val_ssim, epoch, SAVE_DIR_ROOT, MODEL_NAME, device)
 
         # save epoch losses
         train_losses[epoch] = train_loss
         val_losses[epoch] = val_loss
 
         print(f"Epoch [{epoch+1}/{n_epoch}]:")
-        print(f"Train Loss: {train_loss:.4f}, Train PSNR: {train_psnr:.4f}, Train SSIM: {train_ssim:.4f}")
-        print(f"Validation Loss: {val_loss:.4f}, Validation PSNR: {val_psnr:.4f}, Validation SSIM: {val_ssim:.4f}")
+        print(
+            f"Train Loss: {train_loss:.4f}, Train PSNR: {train_psnr:.4f}, Train SSIM: {train_ssim:.4f}")
+        print(
+            f"Validation Loss: {val_loss:.4f}, Validation PSNR: {val_psnr:.4f}, Validation SSIM: {val_ssim:.4f}")
         print('-'*20)
 
     time_elapsed = time.time() - since
-    print('Training completed in {:.0f}m {:.0f}s'.format(time_elapsed // 60, time_elapsed % 60))
+    print('Training completed in {:.0f}m {:.0f}s'.format(
+        time_elapsed // 60, time_elapsed % 60))
 
 
 if __name__ == '__main__':
