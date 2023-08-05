@@ -94,15 +94,6 @@ def train(model, optimizer, criterion, n_epoch,
 
                 # Save output images every 20 epoch
                 if (epoch + 1) % 20 == 0:
-                    for i, output_image in enumerate(outputs):
-                        output_image = output_image.detach().cpu().permute(1, 2, 0).numpy()
-                        output_image = (output_image * 255).astype(np.uint8)
-                        output_image = Image.fromarray(output_image)
-                        os.makedirs('output_images', exist_ok=True)
-                        output_path = os.path.join(
-                            'output_images', f'output_{epoch + 1}_{i + 1}.png')
-                        output_image.save(output_path)
-
                     save_output_images(outputs, SAVE_DIR_ROOT, epoch, MODEL_NAME, device)
 
             val_loss = val_loss / len(data_loaders['validation'])
