@@ -20,6 +20,7 @@ import cv2
 from decouple import config
 
 from utils.save_model import save_model
+from utils.save_output_images import save_output_images
 from dataset import LLIDataset
 from models.model import AutoEncoder
 from models.res_cbam import LLIE
@@ -92,7 +93,7 @@ def train(model, optimizer, criterion, n_epoch,
                 val_ssim += ssim(outputs, targets)
 
                 # Save output images every 20 epoch
-                if (epoch + 1) % 10 == 0:
+                if (epoch + 1) % 20 == 0:
                     for i, output_image in enumerate(outputs):
                         output_image = output_image.detach().cpu().permute(1, 2, 0).numpy()
                         output_image = (output_image * 255).astype(np.uint8)
@@ -102,6 +103,8 @@ def train(model, optimizer, criterion, n_epoch,
                             'output_images', f'output_{epoch + 1}_{i + 1}.png')
                         output_image.save(output_path)
 
+                    save_output_images(outputs, SAVE_DIR_ROOT, epoch, MODEL_NAME, device)
+
             val_loss = val_loss / len(data_loaders['validation'])
             val_psnr = val_psnr / len(data_loaders['validation'])
             val_ssim = val_ssim / len(data_loaders['validation'])
@@ -109,6 +112,7 @@ def train(model, optimizer, criterion, n_epoch,
             if val_psnr > best_psnr:
                 save_model(model, optimizer, val_loss, val_psnr,
                            val_ssim, epoch, SAVE_DIR_ROOT, MODEL_NAME, device)
+                save_output_images(outputs, SAVE_DIR_ROOT, epoch, MODEL_NAME, device, True)
 
         # save epoch losses
         train_losses[epoch] = train_loss
@@ -139,15 +143,15 @@ if __name__ == '__main__':
     INPUT_SIZE = 128
     DATASET_DIR_ROOT = config('DATASET_DIR_ROOT')
     SAVE_DIR_ROOT = config('SAVE_DIR_ROOT')
-    MODEL_NAME = "SimpleCNN.pt"
+    MODEL_NAME = 'SimpleCNN'
     BATCH_SIZE = 32
     EPOCHS = 200
 
-    device = "cpu"
+    device = 'cpu'
     if torch.cuda.is_available():
-        device = "cuda:0"
+        device = 'cuda:0'
     elif torch.backends.mps.is_available():
-        device = "mps"
+        device = 'mps'
 
     train_transforms = transforms.Compose([
         transforms.Resize((INPUT_SIZE, INPUT_SIZE)),
@@ -160,23 +164,23 @@ if __name__ == '__main__':
     ])
 
     train_dataset = LLIDataset(
-        os.path.join(DATASET_DIR_ROOT, "train", "low"),
-        os.path.join(DATASET_DIR_ROOT, "train", "high"),
+        os.path.join(DATASET_DIR_ROOT, 'train', 'low'),
+        os.path.join(DATASET_DIR_ROOT, 'train', 'high'),
         train_transforms,
         train_transforms
     )
     test_dataset = LLIDataset(
-        os.path.join(DATASET_DIR_ROOT, "test", "low"),
-        os.path.join(DATASET_DIR_ROOT, "test", "high"),
+        os.path.join(DATASET_DIR_ROOT, 'test', 'low'),
+        os.path.join(DATASET_DIR_ROOT, 'test', 'high'),
         test_transforms,
         test_transforms
     )
 
     data_loaders = {
-        "train": DataLoader(
+        'train': DataLoader(
             train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=1
         ),
-        "validation": DataLoader(
+        'validation': DataLoader(
             test_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=1
         )
     }
