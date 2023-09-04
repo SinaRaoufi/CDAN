@@ -105,7 +105,13 @@ python test.py
 ```
 
 ## Requirements
-
+The following hardware and software were used for training the model:
+- GPU: NVIDIA GeForce RTX 3090
+- RAM: 24 GB SSD
+- Operating System: Ubuntu 22.04.2 LTS
+- Python version: 3.9.15
+- PyTorch version: 2.0.1
+- PyTorch CUDA version: 11.7
 
 
 ## Citation
