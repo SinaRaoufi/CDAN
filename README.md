@@ -36,13 +36,13 @@ In this section, we present the experimental results obtained by training our CD
 | Supervised           | Kind++                      | 17.752      | 0.760       | 0.198        |
 | Supervised           | TBEFN                       | 17.351      | 0.786       | 0.210        |
 | Supervised           | DSLR                        | 15.050      | 0.597       | 0.337        |
-| Supervised           | LAU-Net                     | **21.513**  | 0.805       | 0.273        |
+| Supervised           | LAU-Net                     | 21.513      | 0.805       | 0.273        |
 | Semi-supervised      | DRBN                        | 15.125      | 0.472       | 0.316        |
 | Unsupervised         | EnlightenGAN                | 17.483      | 0.677       | 0.322        |
 | Zero-shot            | ExCNet                      | 15.783      | 0.515       | 0.373        |
 | Zero-shot            | Zero-DCE                    | 14.861      | 0.589       | 0.335        |
 | Zero-shot            | RRDNet                      | 11.392      | 0.468       | 0.361        |
-|                      | Proposed (CDAN)             | 20.102      | **0.816**   | **0.167**    |
+|                      | Proposed (CDAN)             | 20.102      | 0.816       | 0.167        |
 
 ### Qualitative Evaluation
 <p class="row" float="left" align="middle">
@@ -77,15 +77,12 @@ Open the .env file using a text editor of your choice and modify the values as n
 # Example .env file
 
 # Directory paths
-DATASET_DIR_ROOT=/path/to/your/dataset/directory
-SAVE_DIR_ROOT=/path/to/your/saving/model/directory
-MODEL_NAME=model
+DATA_DIR=/path/to/your/data/directory
+MODEL_DIR=/path/to/your/model/directory
 
 # Hyperparameters
-INPUT_SIZE=128
+LEARNING_RATE=0.001
 BATCH_SIZE=32
-EPOCHS=200
-LEARNING_RATE=1e-3
 ```
 ### 3. Install Dependencies
 
@@ -104,7 +101,7 @@ python train.py
 
 To test the trained model, run:
 ```bash
-python test.py
+python test.py --datasetPath "path/to/the/dataset" --modelPath "path/to/the/saved/model" --isPaired "True/False"
 ```
 
 ## Requirements
