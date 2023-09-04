@@ -24,3 +24,17 @@ class CDANDataset(Dataset):
     
     def __len__(self): 
         return len(self.low_light_dataset)
+class CDANUnpairedDataset(Dataset):
+    def __init__(self, low_light_root, low_light_transforms):
+        super().__init__()
+        self.low_light_dataset = [os.path.join(low_light_root, image) for image in os.listdir(low_light_root)]
+        self.low_light_transform = low_light_transforms
+        
+    def __getitem__(self, idx):
+        low_light = Image.open(self.low_light_dataset[idx]).convert('RGB')
+        low_light = self.low_light_transform(low_light)
+        
+        return low_light
+    
+    def __len__(self): 
+        return len(self.low_light_dataset)
