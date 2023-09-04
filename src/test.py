@@ -16,6 +16,7 @@ import numpy as np
 from decouple import config
 
 from dataset import CDANDataset
+from models.cdan import CDAN
 
 
 def evaluate(model, optimizer, criterion, data_loader: dict, save_dir: str, device='cpu'):
@@ -61,9 +62,10 @@ def evaluate(model, optimizer, criterion, data_loader: dict, save_dir: str, devi
 
 
 if __name__ == '__main__':
-    INPUT_SIZE = 200
+    IMG_HEIGHT = 400
+    IMG_WIDTH = 600
     DATASET_DIR_ROOT = config('DATASET_DIR_ROOT')
-    MODEL_PATH = 'best.pt'
+    SAVED_MODEL_PATH = config('SAVED_MODEL_PATH')
     SAVE_DIR_ROOT = config('SAVE_DIR_ROOT')
     BATCH_SIZE = 16
 
@@ -74,7 +76,7 @@ if __name__ == '__main__':
         device = 'mps'
 
     test_transforms = transforms.Compose([
-        transforms.Resize((400, 600)),
+        transforms.Resize((IMG_HEIGHT, IMG_WIDTH)),
         transforms.ToTensor(),
     ])
 
@@ -86,10 +88,13 @@ if __name__ == '__main__':
     )
 
     test_dataloader = DataLoader(
-        test_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=1)
+        test_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4)
     
-    model = torch.load(MODEL_PATH)
-    criterion = nn.MSELoss()
+    model = CDAN()
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
+    checkpoint = torch.load(SAVED_MODEL_PATH)
+    model.load_state_dict(checkpoint['model_state_dict'])
+    optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+    criterion = nn.MSELoss()
 
     evaluate(model, optimizer, criterion, test_dataloader, SAVE_DIR_ROOT, device)

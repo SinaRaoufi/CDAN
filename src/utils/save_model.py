@@ -6,7 +6,7 @@ import torch
 
 def save_model(model, optimizer, loss, psnr, ssim, epoch, destination_dir, model_name='model', device='cpu'):
     """
-    Saves a PyTorch model to disk along with details of the training run.
+    Saves model parameters to disk along with details of the training run.
 
     Args:
         model (nn.Module): A PyTorch model object to be saved.
@@ -25,24 +25,14 @@ def save_model(model, optimizer, loss, psnr, ssim, epoch, destination_dir, model
     today_datetime = datetime.today().strftime('%Y-%m-%d')
     saved_model_dir = os.path.join(
         destination_dir, 'saved_models', today_datetime, device, model_name)
-
     os.makedirs(saved_model_dir, exist_ok=True)
-
     model_final_dir = os.path.join(saved_model_dir, model_name + '.pt')
-    details_final_dir = os.path.join(
-        saved_model_dir, 'details_' + model_name + '.txt')
-
-    # Save the entire model
-    if device == 'mps':
-        torch.save(model, model_final_dir)
-    else:
-        model_scripted = torch.jit.script(model)
-        model_scripted.save(model_final_dir)
-
-    # Save details
-    with open(details_final_dir, 'w') as f:
-        f.write(f'Epoch: {epoch + 1}\n')
-        f.write(f'PSNR: {psnr}\n')
-        f.write(f'SSIM: {ssim}\n')
-        f.write(f'Loss: {loss}\n')
-        f.write(f'Optimizer: {optimizer}\n')
+        
+    torch.save({
+        'epoch': epoch,
+        'model_state_dict': model.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict(),
+        'loss': loss,
+        'PSNR': psnr,
+        'SSIM': ssim
+        }, model_final_dir)
