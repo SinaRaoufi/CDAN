@@ -36,13 +36,13 @@ In this section, we present the experimental results obtained by training our CD
 |            | [Kind++](https://link.springer.com/article/10.1007/s11263-020-01407-x)                      | 17.752      | 0.760       | 0.198        |
 |            | [TBEFN](https://ieeexplore.ieee.org/document/9261119)                       | 17.351      | 0.786       | 0.210        |
 |            | [DSLR](https://ieeexplore.ieee.org/document/9264763)                        | 15.050      | 0.597       | 0.337        |
-|            | [LAU-Net](https://www.sciencedirect.com/science/article/abs/pii/S092359652300053X)                     | 21.513      | 0.805       | 0.273        |
+|            | [LAU-Net](https://www.sciencedirect.com/science/article/abs/pii/S092359652300053X)                     | **21.513**      | 0.805       | 0.273        |
 | **Semi-supervised**      | [DRBN](https://ieeexplore.ieee.org/document/9369069)                        | 15.125      | 0.472       | 0.316        |
 | **Unsupervised**         | [EnlightenGAN](https://ieeexplore.ieee.org/document/9334429)                | 17.483      | 0.677       | 0.322        |
 | **Zero-shot**            | [ExCNet](https://dl.acm.org/doi/10.1145/3343031.3351069)                      | 15.783      | 0.515       | 0.373        |
 |             | [Zero-DCE](https://openaccess.thecvf.com/content_CVPR_2020/papers/Guo_Zero-Reference_Deep_Curve_Estimation_for_Low-Light_Image_Enhancement_CVPR_2020_paper.pdf)                    | 14.861      | 0.589       | 0.335        |
 |             | [RRDNet](https://ieeexplore.ieee.org/document/9102962)                      | 11.392      | 0.468       | 0.361        |
-|                      | Proposed (CDAN)             | 20.102      | 0.816       | 0.167        |
+|                      | Proposed (CDAN)             | 20.102      | **0.816**       | **0.167**        |
 
 ### Qualitative Evaluation
 <p class="row" float="left" align="middle">
