@@ -18,7 +18,6 @@ import numpy as np
 from decouple import config
 
 from utils.save_model import save_model
-from utils.save_output_images import save_output_images
 from dataset import CDANDataset
 from models.cdan import CDAN
 
@@ -81,10 +80,6 @@ def train(model, optimizer, criterion, n_epoch, data_loaders: dict, device, mode
                 val_psnr += psnr(outputs, targets)
                 val_ssim += ssim(outputs, targets)
 
-                # Save output images every 20 epoch
-                if (epoch + 1) % 20 == 0:
-                    save_output_images(outputs, SAVE_DIR_ROOT, epoch, MODEL_NAME, device)
-
             val_loss = val_loss / len(data_loaders['validation'])
             val_psnr = val_psnr / len(data_loaders['validation'])
             val_ssim = val_ssim / len(data_loaders['validation'])
@@ -92,7 +87,6 @@ def train(model, optimizer, criterion, n_epoch, data_loaders: dict, device, mode
             if val_psnr > best_psnr:
                 save_model(model, optimizer, val_loss, val_psnr,
                            val_ssim, epoch, SAVE_DIR_ROOT, MODEL_NAME, device)
-                save_output_images(outputs, SAVE_DIR_ROOT, epoch, MODEL_NAME, device, True)
 
         # save epoch losses
         train_losses[epoch] = train_loss
