@@ -26,6 +26,23 @@ In this section, we present the experimental results obtained by training our CD
 | [VV](https://sites.google.com/site/vonikakis/datasets?authuser=0)         | 24          | :x: | Severely under/overexposed areas|
 
 ### Quantitative Evaluation
+| Learning method      | Method                      | Avg. PSNR ↑  | Avg. SSIM ↑ | Avg. LPIPS ↓ |
+|----------------------|-----------------------------|-------------|-------------|--------------|
+| Supervised           | LLNET                       | 17.959      | 0.713       | 0.360        |
+| Supervised           | LightenNet                  | 10.301      | 0.402       | 0.394        |
+| Supervised           | MBLLEN                      | 17.902      | 0.715       | 0.247        |
+| Supervised           | Retinex-Net                 | 16.774      | 0.462       | 0.474        |
+| Supervised           | KinD                        | 17.648      | 0.779       | 0.175        |
+| Supervised           | Kind++                      | 17.752      | 0.760       | 0.198        |
+| Supervised           | TBEFN                       | 17.351      | 0.786       | 0.210        |
+| Supervised           | DSLR                        | 15.050      | 0.597       | 0.337        |
+| Supervised           | LAU-Net                     | 21.513      | 0.805       | 0.273        |
+| Semi-supervised      | DRBN                        | 15.125      | 0.472       | 0.316        |
+| Unsupervised         | EnlightenGAN                | 17.483      | 0.677       | 0.322        |
+| Zero-shot            | ExCNet                      | 15.783      | 0.515       | 0.373        |
+| Zero-shot            | Zero-DCE                    | 14.861      | 0.589       | 0.335        |
+| Zero-shot            | RRDNet                      | 11.392      | 0.468       | 0.361        |
+|                      | Proposed (CDAN)             | 20.102      | 0.816       | 0.167        |
 
 ### Qualitative Evaluation
 
@@ -82,3 +99,13 @@ python test.py
 
 
 ## Citation
+```
+@misc{shakibania2023cdan,
+      title={CDAN: Convolutional Dense Attention-guided Network for Low-light Image Enhancement}, 
+      author={Hossein Shakibania and Sina Raoufi and Hassan Khotanlou},
+      year={2023},
+      eprint={2308.12902},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
