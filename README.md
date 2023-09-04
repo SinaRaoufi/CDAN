@@ -1,8 +1,8 @@
 # CDAN: Convolutional Dense Attention-guided Network for Low-light Image Enhancement
 [Hossein Shakibania](https://scholar.google.com/citations?user=huveR90AAAAJ&hl=en&authuser=1), [Sina Raoufi](https://scholar.google.com/citations?user=f0iw8XsAAAAJ&hl=en&authuser=1), and [Hassan Khotanlou](https://scholar.google.com/citations?user=5YX31NgAAAAJ&hl=en&authuser=1)
 
-[![paper](https://img.shields.io/badge/arXiv-Paper-red)](https://doi.org/10.48550/arXiv.2308.12902)
-[![paper](https://img.shields.io/badge/papers_with_code-Paper-blue)](https://paperswithcode.com/paper/cdan-convolutional-dense-attention-guided)
+[![paper](https://img.shields.io/badge/arXiv-Preprint-red)](https://doi.org/10.48550/arXiv.2308.12902)
+[![paper](https://img.shields.io/badge/papers_with_code-Preprint-blue)](https://paperswithcode.com/paper/cdan-convolutional-dense-attention-guided)
 <p align="justify">
 <strong>Abstract:</strong> Low-light images, characterized by inadequate illumination, pose challenges of diminished clarity, muted colors, and reduced details. Low-light image enhancement, an essential task in computer vision, aims to rectify these issues by improving brightness, contrast, and overall perceptual quality, thereby facilitating accurate analysis and interpretation. This paper introduces the Convolutional Dense Attention-guided Network (CDAN), a novel solution for enhancing low-light images. CDAN integrates an autoencoder-based architecture with convolutional and dense blocks, complemented by an attention mechanism and skip connections. This architecture ensures efficient information propagation and feature learning. Furthermore, a dedicated post-processing phase refines color balance and contrast. Our approach demonstrates notable progress compared to state-of-the-art results in low-light image enhancement, showcasing its robustness across a wide range of challenging scenarios. Our model performs remarkably on benchmark datasets, effectively mitigating under-exposure and proficiently restoring textures and colors in diverse low-light scenarios. This achievement underscores CDAN's potential for diverse computer vision tasks, notably enabling robust object detection and recognition in challenging low-light conditions.
 </p>
@@ -28,20 +28,20 @@ In this section, we present the experimental results obtained by training our CD
 ### Quantitative Evaluation
 | Learning method      | Method                      | Avg. PSNR ↑  | Avg. SSIM ↑ | Avg. LPIPS ↓ |
 |----------------------|-----------------------------|-------------|-------------|--------------|
-| Supervised           | [LLNET](https://www.sciencedirect.com/science/article/abs/pii/S003132031630125X)                       | 17.959      | 0.713       | 0.360        |
-| Supervised           | [LightenNet](https://www.sciencedirect.com/science/article/abs/pii/S0167865518300163)                  | 10.301      | 0.402       | 0.394        |
-| Supervised           | [MBLLEN](http://bmvc2018.org/contents/papers/0700.pdf)                      | 17.902      | 0.715       | 0.247        |
-| Supervised           | [Retinex-Net](https://daooshee.github.io/BMVC2018website/)                 | 16.774      | 0.462       | 0.474        |
-| Supervised           | [KinD](https://dl.acm.org/doi/10.1145/3343031.3350926)                        | 17.648      | 0.779       | 0.175        |
-| Supervised           | [Kind++](https://link.springer.com/article/10.1007/s11263-020-01407-x)                      | 17.752      | 0.760       | 0.198        |
-| Supervised           | [TBEFN](https://ieeexplore.ieee.org/document/9261119)                       | 17.351      | 0.786       | 0.210        |
-| Supervised           | [DSLR](https://ieeexplore.ieee.org/document/9264763)                        | 15.050      | 0.597       | 0.337        |
-| Supervised           | [LAU-Net](https://www.sciencedirect.com/science/article/abs/pii/S092359652300053X)                     | 21.513      | 0.805       | 0.273        |
-| Semi-supervised      | [DRBN](https://ieeexplore.ieee.org/document/9369069)                        | 15.125      | 0.472       | 0.316        |
-| Unsupervised         | [EnlightenGAN](https://ieeexplore.ieee.org/document/9334429)                | 17.483      | 0.677       | 0.322        |
-| Zero-shot            | [ExCNet](https://dl.acm.org/doi/10.1145/3343031.3351069)                      | 15.783      | 0.515       | 0.373        |
-| Zero-shot            | [Zero-DCE](https://openaccess.thecvf.com/content_CVPR_2020/papers/Guo_Zero-Reference_Deep_Curve_Estimation_for_Low-Light_Image_Enhancement_CVPR_2020_paper.pdf)                    | 14.861      | 0.589       | 0.335        |
-| Zero-shot            | [RRDNet](https://ieeexplore.ieee.org/document/9102962)                      | 11.392      | 0.468       | 0.361        |
+| **Supervised**           | [LLNET](https://www.sciencedirect.com/science/article/abs/pii/S003132031630125X)                       | 17.959      | 0.713       | 0.360        |
+|            | [LightenNet](https://www.sciencedirect.com/science/article/abs/pii/S0167865518300163)                  | 10.301      | 0.402       | 0.394        |
+|           | [MBLLEN](http://bmvc2018.org/contents/papers/0700.pdf)                      | 17.902      | 0.715       | 0.247        |
+|            | [Retinex-Net](https://daooshee.github.io/BMVC2018website/)                 | 16.774      | 0.462       | 0.474        |
+|            | [KinD](https://dl.acm.org/doi/10.1145/3343031.3350926)                        | 17.648      | 0.779       | 0.175        |
+|            | [Kind++](https://link.springer.com/article/10.1007/s11263-020-01407-x)                      | 17.752      | 0.760       | 0.198        |
+|            | [TBEFN](https://ieeexplore.ieee.org/document/9261119)                       | 17.351      | 0.786       | 0.210        |
+|            | [DSLR](https://ieeexplore.ieee.org/document/9264763)                        | 15.050      | 0.597       | 0.337        |
+|            | [LAU-Net](https://www.sciencedirect.com/science/article/abs/pii/S092359652300053X)                     | 21.513      | 0.805       | 0.273        |
+| **Semi-supervised**      | [DRBN](https://ieeexplore.ieee.org/document/9369069)                        | 15.125      | 0.472       | 0.316        |
+| **Unsupervised**         | [EnlightenGAN](https://ieeexplore.ieee.org/document/9334429)                | 17.483      | 0.677       | 0.322        |
+| **Zero-shot**            | [ExCNet](https://dl.acm.org/doi/10.1145/3343031.3351069)                      | 15.783      | 0.515       | 0.373        |
+|             | [Zero-DCE](https://openaccess.thecvf.com/content_CVPR_2020/papers/Guo_Zero-Reference_Deep_Curve_Estimation_for_Low-Light_Image_Enhancement_CVPR_2020_paper.pdf)                    | 14.861      | 0.589       | 0.335        |
+|             | [RRDNet](https://ieeexplore.ieee.org/document/9102962)                      | 11.392      | 0.468       | 0.361        |
 |                      | Proposed (CDAN)             | 20.102      | 0.816       | 0.167        |
 
 ### Qualitative Evaluation
@@ -65,7 +65,7 @@ To get started with the CDAN project, follow these steps:
 You can clone the repository using Git. Open your terminal and run the following command:
 
 ```bash
-git clone https://github.com/your-username/cdan-project.git
+git clone git@github.com:SinaRaoufi/CDAN.git
 ```
 ### 2. Configure Environmental Variables
 <p align="justify">
@@ -77,12 +77,15 @@ Open the .env file using a text editor of your choice and modify the values as n
 # Example .env file
 
 # Directory paths
-DATA_DIR=/path/to/your/data/directory
-MODEL_DIR=/path/to/your/model/directory
+DATASET_DIR_ROOT=/path/to/your/dataset/directory
+SAVE_DIR_ROOT=/path/to/your/saving/model/directory
+MODEL_NAME=model
 
 # Hyperparameters
-LEARNING_RATE=0.001
+INPUT_SIZE=200
 BATCH_SIZE=32
+EPOCHS=80
+LEARNING_RATE=0.001
 ```
 ### 3. Install Dependencies
 
