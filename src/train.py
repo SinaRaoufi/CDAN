@@ -1,42 +1,32 @@
 import os
 import time
 import random
-import sys
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import DataLoader
+
 from torchvision import transforms
+import torchvision.models as models
 from torchmetrics import PeakSignalNoiseRatio
 from torchmetrics import StructuralSimilarityIndexMeasure
-import torch.nn.functional as F
-import torchvision.models as models
 
-from PIL import Image
 from tqdm import tqdm
 import numpy as np
-import cv2
 from decouple import config
 
 from utils.save_model import save_model
 from utils.save_output_images import save_output_images
-from dataset import LLIDataset
-from models.model import AutoEncoder
-from models.res_cbam import LLIE
-from models.res_bam import ResBAM
-from models.enhanced_model import EnhancedAutoEncoder
-from models.pixel_shuffle import Pixel
-from models.mix import Mix
-from models.vae import MixVAE
+from dataset import CDANDataset
+from models.cdan import CDAN
 
 
-def train(model, optimizer, criterion, n_epoch,
-          data_loaders: dict, device, lr_scheduler=None
-          ):
-    vgg = models.vgg19(
-        weights=models.VGG19_Weights.IMAGENET1K_V1).features[:16].to(device)
+def train(model, optimizer, criterion, n_epoch, data_loaders: dict, device):
+    vgg = models.vgg19(weights=models.VGG19_Weights.IMAGENET1K_V1).features[:16].to(device)
     perceptual_loss_weight = 0.5  # Adjust the weight as desired
+    
     train_losses = np.zeros(n_epoch)
     val_losses = np.zeros(n_epoch)
     best_psnr = 0.0
@@ -153,13 +143,13 @@ if __name__ == '__main__':
         transforms.ToTensor(),
     ])
 
-    train_dataset = LLIDataset(
+    train_dataset = CDANDataset(
         os.path.join(DATASET_DIR_ROOT, 'train', 'low'),
         os.path.join(DATASET_DIR_ROOT, 'train', 'high'),
         train_transforms,
         train_transforms
     )
-    test_dataset = LLIDataset(
+    test_dataset = CDANDataset(
         os.path.join(DATASET_DIR_ROOT, 'test', 'low'),
         os.path.join(DATASET_DIR_ROOT, 'test', 'high'),
         test_transforms,
@@ -175,7 +165,7 @@ if __name__ == '__main__':
         )
     }
 
-    model = Mix().to(device)
+    model = CDAN().to(device)
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
