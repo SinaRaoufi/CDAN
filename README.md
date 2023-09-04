@@ -12,14 +12,73 @@
 </p>
 <p align="center"><b>Figure 1:</b> The overall structure of the proposed model.</p>
 
-## Requirements
-
 ## Experimental Results
+<p align="justify">
+In this section, we present the experimental results obtained by training our CDAN model using the LOL (Low-Light) dataset and evaluating its performance on multiple benchmark datasets. The purpose of this evaluation is to assess the robustness of our model across a spectrum of challenging lighting conditions. 
+</p>
 
-### Dataset
+### Datasets
+| Dataset        | No. of Images | Paired | Characteristics        |
+|----------------|---------------|--------|-------------------------|
+| [LOL]()      | 500          |     | Low-light scenes        |
+| [ExDark]()      | 1500          | No     | Daylight and nighttime  |
+| [DICM]()      | 800           | Yes    | Indoor and outdoor     |
+| [VV]()      | 1200          | No     | Diverse lighting        |
 
 ### Quantitative Evaluation
 
 ### Qualitative Evaluation
+
+## Installation
+
+To get started with the CDAN project, follow these steps:
+
+### 1. Clone the Repository
+
+You can clone the repository using Git. Open your terminal and run the following command:
+
+```bash
+git clone https://github.com/your-username/cdan-project.git
+```
+### 2. Configure Environmental Variables
+<p align="justify">
+After cloning, navigate to the project directory and locate the .env file. This file contains important hyperparameter values and configurations for the CDAN model. You can customize these variables according to your requirements.
+</p>
+
+Open the .env file using a text editor of your choice and modify the values as needed:
+```
+# Example .env file
+
+# Directory paths
+DATA_DIR=/path/to/your/data/directory
+MODEL_DIR=/path/to/your/model/directory
+
+# Hyperparameters
+LEARNING_RATE=0.001
+BATCH_SIZE=32
+```
+### 3. Install Dependencies
+
+You can install project dependencies using pip:
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Run the Project
+
+You are now ready to run the CDAN project. To start the training, use the following command:
+
+```bash
+python train.py
+```
+
+To test the trained model, run:
+```bash
+python test.py
+```
+
+## Requirements
+
+
 
 ## Citation
