@@ -28,20 +28,20 @@ In this section, we present the experimental results obtained by training our CD
 ### Quantitative Evaluation
 | Learning method      | Method                      | Avg. PSNR ↑  | Avg. SSIM ↑ | Avg. LPIPS ↓ |
 |----------------------|-----------------------------|-------------|-------------|--------------|
-| Supervised           | LLNET                       | 17.959      | 0.713       | 0.360        |
-| Supervised           | LightenNet                  | 10.301      | 0.402       | 0.394        |
-| Supervised           | MBLLEN                      | 17.902      | 0.715       | 0.247        |
-| Supervised           | Retinex-Net                 | 16.774      | 0.462       | 0.474        |
-| Supervised           | KinD                        | 17.648      | 0.779       | 0.175        |
-| Supervised           | Kind++                      | 17.752      | 0.760       | 0.198        |
-| Supervised           | TBEFN                       | 17.351      | 0.786       | 0.210        |
-| Supervised           | DSLR                        | 15.050      | 0.597       | 0.337        |
-| Supervised           | LAU-Net                     | 21.513      | 0.805       | 0.273        |
-| Semi-supervised      | DRBN                        | 15.125      | 0.472       | 0.316        |
-| Unsupervised         | EnlightenGAN                | 17.483      | 0.677       | 0.322        |
-| Zero-shot            | ExCNet                      | 15.783      | 0.515       | 0.373        |
-| Zero-shot            | Zero-DCE                    | 14.861      | 0.589       | 0.335        |
-| Zero-shot            | RRDNet                      | 11.392      | 0.468       | 0.361        |
+| Supervised           | [LLNET](https://www.sciencedirect.com/science/article/abs/pii/S003132031630125X)                       | 17.959      | 0.713       | 0.360        |
+| Supervised           | [LightenNet](https://www.sciencedirect.com/science/article/abs/pii/S0167865518300163)                  | 10.301      | 0.402       | 0.394        |
+| Supervised           | [MBLLEN](http://bmvc2018.org/contents/papers/0700.pdf)                      | 17.902      | 0.715       | 0.247        |
+| Supervised           | [Retinex-Net](https://daooshee.github.io/BMVC2018website/)                 | 16.774      | 0.462       | 0.474        |
+| Supervised           | [KinD](https://dl.acm.org/doi/10.1145/3343031.3350926)                        | 17.648      | 0.779       | 0.175        |
+| Supervised           | [Kind++](https://link.springer.com/article/10.1007/s11263-020-01407-x)                      | 17.752      | 0.760       | 0.198        |
+| Supervised           | [TBEFN](https://ieeexplore.ieee.org/document/9261119)                       | 17.351      | 0.786       | 0.210        |
+| Supervised           | [DSLR](https://ieeexplore.ieee.org/document/9264763)                        | 15.050      | 0.597       | 0.337        |
+| Supervised           | [LAU-Net](https://www.sciencedirect.com/science/article/abs/pii/S092359652300053X)                     | 21.513      | 0.805       | 0.273        |
+| Semi-supervised      | [DRBN](https://ieeexplore.ieee.org/document/9369069)                        | 15.125      | 0.472       | 0.316        |
+| Unsupervised         | [EnlightenGAN](https://ieeexplore.ieee.org/document/9334429)                | 17.483      | 0.677       | 0.322        |
+| Zero-shot            | [ExCNet](https://dl.acm.org/doi/10.1145/3343031.3351069)                      | 15.783      | 0.515       | 0.373        |
+| Zero-shot            | [Zero-DCE](https://openaccess.thecvf.com/content_CVPR_2020/papers/Guo_Zero-Reference_Deep_Curve_Estimation_for_Low-Light_Image_Enhancement_CVPR_2020_paper.pdf)                    | 14.861      | 0.589       | 0.335        |
+| Zero-shot            | [RRDNet](https://ieeexplore.ieee.org/document/9102962)                      | 11.392      | 0.468       | 0.361        |
 |                      | Proposed (CDAN)             | 20.102      | 0.816       | 0.167        |
 
 ### Qualitative Evaluation
