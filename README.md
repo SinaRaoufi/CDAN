@@ -45,6 +45,16 @@ In this section, we present the experimental results obtained by training our CD
 |                      | Proposed (CDAN)             | 20.102      | 0.816       | 0.167        |
 
 ### Qualitative Evaluation
+<p class="row" float="left" align="middle">
+<img style="width: 100%; height: auto;" src="assets/exdark.jpeg"/>
+</p>
+<p align="center"><b>Figure 2:</b> Visual comparison of state-of-the-art models on ExDark dataset.</p>
+
+<p class="row" float="left" align="middle">
+<img style="width: 100%; height: auto;" src="assets/dicm.jpeg"/>
+</p>
+<p align="center"><b>Figure 3:</b> Visual comparison of state-of-the-art models on DICM dataset.</p>
+
 
 ## Installation
 
