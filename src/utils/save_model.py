@@ -6,7 +6,7 @@ import torch
 
 def save_model(model, optimizer, loss, psnr, ssim, epoch, destination_dir, model_name='model', device='cpu'):
     """
-    Saves a PyTorch model to disk along with details of the training run.
+    Saves model parameters to disk along with details of the training run.
 
     Args:
         model (nn.Module): A PyTorch model object to be saved.
@@ -25,12 +25,8 @@ def save_model(model, optimizer, loss, psnr, ssim, epoch, destination_dir, model
     today_datetime = datetime.today().strftime('%Y-%m-%d')
     saved_model_dir = os.path.join(
         destination_dir, 'saved_models', today_datetime, device, model_name)
-
     os.makedirs(saved_model_dir, exist_ok=True)
-
     model_final_dir = os.path.join(saved_model_dir, model_name + '.pt')
-    details_final_dir = os.path.join(
-        saved_model_dir, 'details_' + model_name + '.txt')
         
     torch.save({
         'epoch': epoch,
