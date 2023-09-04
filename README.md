@@ -14,16 +14,16 @@
 
 ## Experimental Results
 <p align="justify">
-In this section, we present the experimental results obtained by training our CDAN model using the LOL (Low-Light) dataset and evaluating its performance on multiple benchmark datasets. The purpose of this evaluation is to assess the robustness of our model across a spectrum of challenging lighting conditions. 
+In this section, we present the experimental results obtained by training our CDAN model using the LOw-Light (LOL) dataset and evaluating its performance on multiple benchmark datasets. The purpose of this evaluation is to assess the robustness of our model across a spectrum of challenging lighting conditions. 
 </p>
 
 ### Datasets
 | Dataset        | No. of Images | Paired | Characteristics        |
 |----------------|---------------|--------|-------------------------|
-| [LOL]()      | 500          |     | Low-light scenes        |
-| [ExDark]()      | 1500          | No     | Daylight and nighttime  |
-| [DICM]()      | 800           | Yes    | Indoor and outdoor     |
-| [VV]()      | 1200          | No     | Diverse lighting        |
+| [LOL](https://paperswithcode.com/dataset/lol)        | 500           | :white_check_mark: | Indoor |
+| [ExDark](https://paperswithcode.com/dataset/exdark)     | 7363          | :x: | Extremely Dark, Indoor, Outdoor |
+| [DICM](https://paperswithcode.com/dataset/dicm)       | 69           | :x: | Indoor, Outdoor |
+| [VV](https://sites.google.com/site/vonikakis/datasets?authuser=0)         | 24          | :x: | Severely under/overexposed areas|
 
 ### Quantitative Evaluation
 
