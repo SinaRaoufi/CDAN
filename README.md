@@ -65,7 +65,7 @@ To get started with the CDAN project, follow these steps:
 You can clone the repository using Git. Open your terminal and run the following command:
 
 ```bash
-git clone https://github.com/your-username/cdan-project.git
+git clone git@github.com:SinaRaoufi/CDAN.git
 ```
 ### 2. Configure Environmental Variables
 <p align="justify">
@@ -77,12 +77,15 @@ Open the .env file using a text editor of your choice and modify the values as n
 # Example .env file
 
 # Directory paths
-DATA_DIR=/path/to/your/data/directory
-MODEL_DIR=/path/to/your/model/directory
+DATASET_DIR_ROOT=/path/to/your/dataset/directory
+SAVE_DIR_ROOT=/path/to/your/saving/model/directory
+MODEL_NAME=model
 
 # Hyperparameters
-LEARNING_RATE=0.001
+INPUT_SIZE=200
 BATCH_SIZE=32
+EPOCHS=80
+LEARNING_RATE=0.001
 ```
 ### 3. Install Dependencies
 
