@@ -77,12 +77,16 @@ Open the .env file using a text editor of your choice and modify the values as n
 # Example .env file
 
 # Directory paths
-DATA_DIR=/path/to/your/data/directory
-MODEL_DIR=/path/to/your/model/directory
+DATASET_DIR_ROOT=/path/to/your/dataset/directory
+SAVE_DIR_ROOT=/path/to/your/saving/model/directory
+MODEL_NAME=model
 
 # Hyperparameters
-LEARNING_RATE=0.001
+INPUT_SIZE=128
 BATCH_SIZE=32
+EPOCHS=200
+LEARNING_RATE=1e-3
+
 ```
 ### 3. Install Dependencies
 
