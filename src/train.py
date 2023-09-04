@@ -123,7 +123,7 @@ if __name__ == '__main__':
     INPUT_SIZE = 128
     DATASET_DIR_ROOT = config('DATASET_DIR_ROOT')
     SAVE_DIR_ROOT = config('SAVE_DIR_ROOT')
-    MODEL_NAME = 'SimpleCNN'
+    MODEL_NAME = 'CDAN'
     BATCH_SIZE = 32
     EPOCHS = 200
 
