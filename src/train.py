@@ -22,7 +22,7 @@ from dataset import CDANDataset
 from models.cdan import CDAN
 
 
-def train(model, optimizer, criterion, n_epoch, data_loaders: dict, device, model_name):
+def train(model, optimizer, criterion, n_epoch, data_loaders: dict, device, save_dir_root, model_name):
     vgg = models.vgg19(weights=models.VGG19_Weights.IMAGENET1K_V1).features[:16].to(device)
     perceptual_loss_weight = 0.5  # Adjust the weight as desired
     
@@ -48,8 +48,7 @@ def train(model, optimizer, criterion, n_epoch, data_loaders: dict, device, mode
 
             outputs = model(inputs)
             loss = criterion(outputs, targets)
-            perceptual_loss = perceptual_loss_weight * \
-                F.mse_loss(vgg(outputs), vgg(targets))
+            perceptual_loss = perceptual_loss_weight * F.mse_loss(vgg(outputs), vgg(targets))
             loss = loss + perceptual_loss
             train_loss += loss.item()
             train_psnr += psnr(outputs, targets)
@@ -85,8 +84,9 @@ def train(model, optimizer, criterion, n_epoch, data_loaders: dict, device, mode
             val_ssim = val_ssim / len(data_loaders['validation'])
 
             if val_psnr > best_psnr:
+                best_psnr = val_psnr
                 save_model(model, optimizer, val_loss, val_psnr,
-                           val_ssim, epoch, SAVE_DIR_ROOT, MODEL_NAME, device)
+                           val_ssim, epoch, save_dir_root, model_name, device)
 
         # save epoch losses
         train_losses[epoch] = train_loss
@@ -115,15 +115,15 @@ if __name__ == '__main__':
     torch.backends.cudnn.benchmark = False
 
     # Hyperparameters
-    INPUT_SIZE = 128
-    BATCH_SIZE = 32
-    EPOCHS = 200
-    LEARNING_RATE = 1e-3
+    INPUT_SIZE = config('INPUT_SIZE', default=200, cast=int)
+    BATCH_SIZE = config('INPUT_SIZE', default=16, cast=int)
+    EPOCHS = config('INPUT_SIZE', default=80, cast=int)
+    LEARNING_RATE = config('INPUT_SIZE', default=1e-3, cast=float)
 
     # Configurations
     DATASET_DIR_ROOT = config('DATASET_DIR_ROOT')
     SAVE_DIR_ROOT = config('SAVE_DIR_ROOT')
-    MODEL_NAME = 'SimpleCNN'
+    MODEL_NAME = config('MODEL_NAME')
     DEVICE = 'cpu'
     if torch.cuda.is_available():
         DEVICE = 'cuda:0'
@@ -166,4 +166,4 @@ if __name__ == '__main__':
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
-    train(model, optimizer, criterion, EPOCHS, data_loaders, DEVICE, MODEL_NAME)
+    train(model, optimizer, criterion, EPOCHS, data_loaders, DEVICE, SAVE_DIR_ROOT, MODEL_NAME)
