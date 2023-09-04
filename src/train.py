@@ -85,8 +85,7 @@ def train(model, optimizer, criterion, n_epoch,
 
                 outputs = model(inputs)
                 loss = criterion(outputs, targets)
-                perceptual_loss = perceptual_loss_weight * \
-                    F.mse_loss(vgg(outputs), vgg(targets))
+                perceptual_loss = perceptual_loss_weight * F.mse_loss(vgg(outputs), vgg(targets))
                 loss = loss + perceptual_loss
                 val_loss += loss.item()
                 val_psnr += psnr(outputs, targets)
