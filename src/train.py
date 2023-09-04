@@ -23,7 +23,7 @@ from dataset import CDANDataset
 from models.cdan import CDAN
 
 
-def train(model, optimizer, criterion, n_epoch, data_loaders: dict, device):
+def train(model, optimizer, criterion, n_epoch, data_loaders: dict, device, model_name):
     vgg = models.vgg19(weights=models.VGG19_Weights.IMAGENET1K_V1).features[:16].to(device)
     perceptual_loss_weight = 0.5  # Adjust the weight as desired
     
@@ -120,18 +120,21 @@ if __name__ == '__main__':
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
+    # Hyperparameters
     INPUT_SIZE = 128
+    BATCH_SIZE = 32
+    EPOCHS = 200
+    LEARNING_RATE = 1e-3
+
+    # Configurations
     DATASET_DIR_ROOT = config('DATASET_DIR_ROOT')
     SAVE_DIR_ROOT = config('SAVE_DIR_ROOT')
     MODEL_NAME = 'SimpleCNN'
-    BATCH_SIZE = 32
-    EPOCHS = 200
-
-    device = 'cpu'
+    DEVICE = 'cpu'
     if torch.cuda.is_available():
-        device = 'cuda:0'
+        DEVICE = 'cuda:0'
     elif torch.backends.mps.is_available():
-        device = 'mps'
+        DEVICE = 'mps'
 
     train_transforms = transforms.Compose([
         transforms.Resize((INPUT_SIZE, INPUT_SIZE)),
@@ -165,8 +168,8 @@ if __name__ == '__main__':
         )
     }
 
-    model = CDAN().to(device)
+    model = CDAN()
     criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters(), lr=1e-3)
+    optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
-    train(model, optimizer, criterion, EPOCHS, data_loaders, device)
+    train(model, optimizer, criterion, EPOCHS, data_loaders, DEVICE, MODEL_NAME)
