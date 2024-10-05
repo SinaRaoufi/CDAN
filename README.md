@@ -1,4 +1,4 @@
-# CDAN: Convolutional Dense Attention-guided Network for Low-light Image Enhancement
+# [CDAN: Convolutional Dense Attention-guided Network for Low-light Image Enhancement](https://doi.org/10.1016/j.dsp.2024.104802)
 [Hossein Shakibania](https://scholar.google.com/citations?user=huveR90AAAAJ&hl=en&authuser=1), [Sina Raoufi](https://scholar.google.com/citations?user=f0iw8XsAAAAJ&hl=en&authuser=1), and [Hassan Khotanlou](https://scholar.google.com/citations?user=5YX31NgAAAAJ&hl=en&authuser=1)
 
 [![paper](https://img.shields.io/badge/arXiv-Preprint-red)](https://doi.org/10.48550/arXiv.2308.12902)
@@ -118,13 +118,15 @@ The following hardware and software were used for training the model:
 
 
 ## Citation
-```
-@misc{shakibania2023cdan,
-      title={CDAN: Convolutional Dense Attention-guided Network for Low-light Image Enhancement}, 
-      author={Hossein Shakibania and Sina Raoufi and Hassan Khotanlou},
-      year={2023},
-      eprint={2308.12902},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+```bibtex
+@article{SHAKIBANIA2024104802,
+  title = {CDAN: Convolutional Dense Attention-guided Network for Low-light Image Enhancement},
+  journal = {Digital Signal Processing},
+  pages = {104802},
+  year = {2024},
+  issn = {1051-2004},
+  doi = {https://doi.org/10.1016/j.dsp.2024.104802},
+  url = {https://www.sciencedirect.com/science/article/pii/S1051200424004275},
+  author = {Hossein Shakibania and Sina Raoufi and Hassan Khotanlou},
 }
 ```
