@@ -119,11 +119,12 @@ The following hardware and software were used for training the model:
 
 ## Citation
 ```bibtex
-@article{SHAKIBANIA2024104802,
-  title = {CDAN: Convolutional Dense Attention-guided Network for Low-light Image Enhancement},
+@article{SHAKIBANIA2025104802,
+  title = {CDAN: Convolutional dense attention-guided network for low-light image enhancement},
   journal = {Digital Signal Processing},
+  volume = {156},
   pages = {104802},
-  year = {2024},
+  year = {2025},
   issn = {1051-2004},
   doi = {https://doi.org/10.1016/j.dsp.2024.104802},
   url = {https://www.sciencedirect.com/science/article/pii/S1051200424004275},
