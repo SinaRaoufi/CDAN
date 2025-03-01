@@ -1,0 +1,11 @@
+albumentations==1.3.0
+numpy==1.25.0
+opencv_contrib_python==4.8.0.74
+opencv_python_headless==4.6.0.66
+optuna==3.0.3
+Pillow==11.1.0
+python-decouple==3.8
+torch==2.2.2
+torchmetrics==1.2.0
+torchvision==0.17.2
+tqdm==4.64.0
