@@ -1,5 +1,7 @@
 # [CDAN: Convolutional Dense Attention-guided Network for Low-light Image Enhancement](https://doi.org/10.1016/j.dsp.2024.104802)
-[Hossein Shakibania](https://scholar.google.com/citations?user=huveR90AAAAJ&hl=en&authuser=1), [Sina Raoufi](https://scholar.google.com/citations?user=f0iw8XsAAAAJ&hl=en&authuser=1), and [Hassan Khotanlou](https://scholar.google.com/citations?user=5YX31NgAAAAJ&hl=en&authuser=1)
+[Hossein Shakibania](https://scholar.google.com/citations?user=huveR90AAAAJ&hl=en&authuser=1)\*, [Sina Raoufi](https://scholar.google.com/citations?user=f0iw8XsAAAAJ&hl=en&authuser=1)\*, and [Hassan Khotanlou](https://scholar.google.com/citations?user=5YX31NgAAAAJ&hl=en&authuser=1)
+
+<sup>\* Equal contribution</sup>
 
 [![paper](https://img.shields.io/badge/arXiv-Preprint-red)](https://doi.org/10.48550/arXiv.2308.12902)
 
@@ -56,7 +58,7 @@ In this section, we present the experimental results obtained by training our CD
 <p align="center"><b>Figure 3:</b> Visual comparison of state-of-the-art models on DICM dataset.</p>
 
 
-## Installation
+## Getting Started
 
 To get started with the CDAN project, follow these steps:
 
@@ -67,26 +69,28 @@ You can clone the repository using Git. Open your terminal and run the following
 ```bash
 git clone git@github.com:SinaRaoufi/CDAN.git
 ```
-### 2. Configure Environmental Variables
+### 2. Configure Settings
 <p align="justify">
-After cloning, navigate to the project directory and locate the .env file. This file contains important hyperparameter values and configurations for the CDAN model. You can customize these variables according to your requirements.
+After cloning, navigate to the project directory and locate the `config/default.json` file. This file contains all the configuration settings for the CDAN model, including model architecture, training parameters, and dataset paths. You can customize these settings according to your requirements.
 </p>
 
-Open the .env file using a text editor of your choice and modify the values as needed:
-```
-# Example .env file
+Key configuration settings:
+- **Model Settings**: Define the model architecture and its parameters
+- **Training Settings**:
+  - `device`: Training device (cuda/mps/cpu)
+  - `n_epoch`: Number of training epochs
+  - `lr`: Learning rate
+  - Dataset paths and dataloader configurations
+- **Testing Settings**:
+  - Dataset paths and configurations
+  - Post-processing options
+  - Output paths for generated images
 
-# Directory paths
-DATASET_DIR_ROOT=/path/to/your/dataset/directory
-SAVE_DIR_ROOT=/path/to/your/saving/model/directory
-MODEL_NAME=model
+Modify these settings according to your setup, particularly:
+1. Update the dataset paths to point to your data
+2. Adjust the training parameters if needed
+3. Configure the output paths for saved models and results
 
-# Hyperparameters
-INPUT_SIZE=200
-BATCH_SIZE=32
-EPOCHS=80
-LEARNING_RATE=0.001
-```
 ### 3. Install Dependencies
 
 You can install project dependencies using pip:
@@ -99,15 +103,15 @@ pip install -r requirements.txt
 You are now ready to run the CDAN project. To start the training, use the following command:
 
 ```bash
-python train.py
+python run.py -p train -c config/default.json
 ```
 
 To test the trained model, run:
 ```bash
-python test.py --datasetPath "path/to/the/dataset" --modelPath "path/to/the/saved/model" --isPaired "True/False"
+python run.py -p test -c config/default.json
 ```
 
-## Requirements
+## Experimental setup
 The following hardware and software were used for training the model:
 - GPU: NVIDIA GeForce RTX 3090
 - RAM: 24 GB SSD
