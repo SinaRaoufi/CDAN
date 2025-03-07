@@ -53,7 +53,7 @@
                 "low_light_root": "/Users/sinaraoufi/Downloads/LOLdataset/test/low", 
                 "normal_light_root": "/Users/sinaraoufi/Downloads/LOLdataset/test/high"
             },
-            "is_paired": "True"
+            "is_dataset_paired": "True"
         },
         "dataloader": {
             "args": {
