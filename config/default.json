@@ -47,13 +47,12 @@
         "dataset": {
             "name": [
                 "data.dataset",
-                "PairedDataset"
+                "UnpairedDataset"
             ],
             "args": {
-                "low_light_root": "/Users/sinaraoufi/Downloads/LOLdataset/test/low", 
-                "normal_light_root": "/Users/sinaraoufi/Downloads/LOLdataset/test/high"
+                "low_light_root": "/Users/sinaraoufi/Downloads/LOLdataset/test/low"
             },
-            "is_dataset_paired": "True"
+            "is_dataset_paired": "False"
         },
         "dataloader": {
             "args": {
