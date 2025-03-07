@@ -36,7 +36,7 @@
             "args": {
                 "batch_size": 16,
                 "shuffle": "False",
-                "num_workers": 4
+                "num_workers": 2
             }
         },
         "model_path": "saved_models/",
@@ -59,7 +59,7 @@
             "args": {
                 "batch_size": 16,
                 "shuffle": "False",
-                "num_workers": 4
+                "num_workers": 2
             }
         },
         "apply_post_processing": "True",
