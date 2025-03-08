@@ -32,11 +32,14 @@ class PairedDataset(Dataset):
 
 
 class UnpairedDataset(Dataset):
-    def __init__(self, low_light_root, low_light_transforms, image_size=[200, 200]):
+    def __init__(self, low_light_root, image_size=[200, 200]):
         super().__init__()
         self.low_light_dataset = [os.path.join(
             low_light_root, image) for image in os.listdir(low_light_root)]
-        self.low_light_transform = low_light_transforms
+        self.low_light_transform = transforms.Compose([
+            transforms.Resize((200, 200)),
+            transforms.ToTensor()
+            ])
         self.transforms = transforms.Compose([
             transforms.Resize((image_size[0], image_size[1])),
             transforms.ToTensor(),

@@ -1,0 +1,57 @@
+{
+  "name": "deault",
+  "model": {
+    "which_model": {
+      "name": ["models.model", "Model"],
+      "args": {}
+    },
+    "networks": [
+      {
+        "name": ["models.cdan", "CDAN"],
+        "args": {}
+      }
+    ]
+  },
+  "train": {
+    "device": "cuda",
+    "n_epoch": 80,
+    "lr": 1e-3,
+    "dataset": {
+      "name": ["data.dataset", "PairedDataset"],
+      "args": {
+        "low_light_root": "/Users/sinaraoufi/Downloads/LOLdataset/train/low",
+        "normal_light_root": "/Users/sinaraoufi/Downloads/LOLdataset/train/high"
+      }
+    },
+    "dataloader": {
+      "args": {
+        "batch_size": 16,
+        "shuffle": "False",
+        "num_workers": 2
+      }
+    },
+    "model_path": "saved_models/",
+    "model_name": "CDAN.pt"
+  },
+  "test": {
+    "device": "cuda",
+    "dataset": {
+      "name": ["data.dataset", "UnpairedDataset"],
+      "args": {
+        "low_light_root": "/Users/sinaraoufi/Downloads/LOLdataset/test/low"
+      },
+      "is_dataset_paired": "False"
+    },
+    "dataloader": {
+      "args": {
+        "batch_size": 16,
+        "shuffle": "False",
+        "num_workers": 2
+      }
+    },
+    "apply_post_processing": "True",
+    "model_path": "saved_models/",
+    "model_name": "CDAN.pt",
+    "output_images_path": "test_images/"
+  }
+}

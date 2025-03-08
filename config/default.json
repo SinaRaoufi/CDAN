@@ -36,7 +36,7 @@
             "args": {
                 "batch_size": 16,
                 "shuffle": "False",
-                "num_workers": 4
+                "num_workers": 2
             }
         },
         "model_path": "saved_models/",
@@ -47,19 +47,18 @@
         "dataset": {
             "name": [
                 "data.dataset",
-                "PairedDataset"
+                "UnpairedDataset"
             ],
             "args": {
-                "low_light_root": "/Users/sinaraoufi/Downloads/LOLdataset/test/low", 
-                "normal_light_root": "/Users/sinaraoufi/Downloads/LOLdataset/test/high"
+                "low_light_root": "/Users/sinaraoufi/Downloads/LOLdataset/test/low"
             },
-            "is_paired": "True"
+            "is_dataset_paired": "False"
         },
         "dataloader": {
             "args": {
                 "batch_size": 16,
                 "shuffle": "False",
-                "num_workers": 4
+                "num_workers": 2
             }
         },
         "apply_post_processing": "True",
