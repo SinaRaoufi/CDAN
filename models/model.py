@@ -35,7 +35,7 @@ class Model(BaseModel):
 
         return loss + perceptual_loss
     
-    def generate_output_images(self, outputs, save_dir):
+    def generate_output_images(self, outputs, filenames, save_dir):
         """Generates and saves output images to the specified directory."""
         os.makedirs(save_dir, exist_ok=True)
         for i, output_image in enumerate(outputs):
@@ -43,8 +43,7 @@ class Model(BaseModel):
             output_image = (output_image * 255).astype(np.uint8)
             output_image = Image.fromarray(output_image)
 
-            output_path = os.path.join(save_dir, f'output_{i + 1}.png')
-
+            output_path = os.path.join(save_dir, filenames[i])
             output_image.save(output_path)
         print(f'{len(outputs)} output images generated and saved to {save_dir}')
 
@@ -95,6 +94,7 @@ class Model(BaseModel):
       lpips = LearnedPerceptualImagePatchSimilarity(net_type='alex').to(self.device)
 
       all_outputs = []  # Accumulate outputs from all batches here
+      all_filenames = []
 
       with torch.no_grad():
           test_loss = 0.0
@@ -118,10 +118,11 @@ class Model(BaseModel):
                   test_lpips += lpips(outputs, targets)
                   all_outputs.append(outputs)  # Append outputs of current batch
           else:
-              for inputs in tqdm(self.dataloader, desc='Testing...'):
+              for inputs,filenames in tqdm(self.dataloader, desc='Testing...'):
                   inputs = inputs.to(self.device)
                   outputs = self.network(inputs)
                   all_outputs.append(outputs)  # Append outputs of current batch
+                  all_filenames.extend(filenames)
 
           if self.is_dataset_paired:
               test_loss = test_loss / len(self.dataloader)
@@ -136,4 +137,4 @@ class Model(BaseModel):
           all_outputs = torch.cat(all_outputs, dim=0)
           
           # Generate output images from the concatenated tensor
-          self.generate_output_images(all_outputs, self.output_images_path)
+          self.generate_output_images(all_outputs, all_filenames, self.output_images_path)
