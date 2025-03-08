@@ -29,7 +29,8 @@
             ],
             "args": {
                 "low_light_root": "/Users/sinaraoufi/Downloads/LOLdataset/train/low", 
-                "normal_light_root": "/Users/sinaraoufi/Downloads/LOLdataset/train/high"
+                "normal_light_root": "/Users/sinaraoufi/Downloads/LOLdataset/train/high",
+                "image_size": [200, 200]
             }
         },
         "dataloader": {
@@ -51,7 +52,8 @@
             ],
             "args": {
                 "low_light_root": "/Users/sinaraoufi/Downloads/LOLdataset/test/low", 
-                "normal_light_root": "/Users/sinaraoufi/Downloads/LOLdataset/test/high"
+                "normal_light_root": "/Users/sinaraoufi/Downloads/LOLdataset/test/high",
+                "image_size": [200, 200]
             },
             "is_paired": "True"
         },
